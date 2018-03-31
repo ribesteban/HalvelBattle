@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Cinzel:700|Poppins" rel="stylesheet">
+    <script src="{{ asset('jquery/wow.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-localScroll/2.0.0/jquery.localScroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-scrollTo/2.1.2/jquery.scrollTo.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="{{ asset('jquery/lancement.js') }}"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript">
+        new WOW().init(); // Initialisation wow Animation
+    </script>
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <style>
+        {% block style %}{% endblock %}
+    </style>
+<body>
+<nav class="main-nav fixed-top navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+
+            <a href="{{  path('index') }}"><img src="{{ asset('img/logonav.png') }}" alt="logo" class="logo"></a>
+        </div>
+        <div class="navbar" id="myNavbar">
+            <ul>
+                <li><a href="{{  path('inscription') }}">Inscription</a></li>
+                <li><a href="{{  path('security_login') }}">Connexion</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="row">
+    <div class="bloc1" id="z1" style="padding-top: 20vh;">
+        {% block bloc1 %}{% endblock %}
+    </div>
+
+    <footer class="footer navbar navbar-default col-md-12">
+        <div class="liens">
+            <a target="blank" href="#"> Mentions légales </a>
+            <a target="blank" href="#"> Politique de confidentialité </a>
+        </div>
+    </footer>
+</div>
+</body>
+</html>

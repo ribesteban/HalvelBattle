@@ -1,0 +1,56 @@
+{% extends 'accueil/nonco_base.html.twig' %}
+
+{% block title %}
+    Connexion
+{% endblock %}
+
+{% block style %}
+    .bloc1{
+    background-image: url({{ asset('img/fond_connexion.jpg') }});
+    }
+    #centaure{
+        width:40vw;
+    }
+    .element{
+    float: left;
+    }
+    #submit{
+    background-image: url({{ asset('img/connexion.png') }});
+    }
+{% endblock %}
+
+{% block bloc1 %}
+    {% if error %}
+        <div class="alert alert-danger">
+            {{ error.messageKey }}
+        </div>
+    {% endif %}
+
+    <div class="row">
+    <div class="col-md-5 element">
+        <img id="centaure" src="{{ asset('img/centaure.png') }}" alt="Halvel Battle"/>
+    </div>
+    <div class="col-md-5">
+        <div class="well">
+            <form action="{{ path('security_login') }}" method="post">
+                <fieldset>
+                    <legend><i class="fa fa-lock" aria-hidden="true"></i> Connexion</legend>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Mot de passe</label>
+                        <input type="password" id="password" name="_password" class="form-control" />
+                    </div>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
+                    <button id="submit" type="submit">&nbsp;
+                    </button>
+                </fieldset>
+            </form>
+            <p><a href="{{  path('inscription') }}">Pas encore inscrit ?</a></p>
+        </div>
+    </div>
+
+
+{% endblock %}

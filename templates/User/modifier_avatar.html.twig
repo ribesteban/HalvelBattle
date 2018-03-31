@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Modifier votre avatar
+{% endblock %}
+
+{% block style %}
+    .bloc1{
+    background-image: url({{ asset('img/fond3.png') }});
+    }
+    img{
+        width: 6vw;
+        margin: 1%;
+        float: left;
+    }
+    h2{
+        margin-bottom: 2vh;
+    }
+
+{% endblock %}
+
+{% block bloc1 %}
+    <div id="form_avatar">
+        <h2>Sélectionnez un nouvel avatar</h2>
+        <form action="{{ path("new_avatar") }}" method="post">
+            {% for i in 0..9 %}
+                {% if joueur.UserImage == "avatars/"~i~".png" %}
+                    <div class="choix">
+                        <input type="radio" name="avatar" value="{{ "avatars/"~i~".png" }}" id="avatar" checked="checked" /> <label class="radio-inline" for="avatar"><img src="{{ asset("avatars/" ~ i ~".png") }}"  /></label>
+                    </div>
+                {% else %}
+                    <div class="choix">
+                        <input type="radio" name="avatar" value="{{ "avatars/"~i~".png" }}" id="avatar" /> <label class="radio-inline" for="avatar"><img src="{{ asset("avatars/" ~ i ~".png") }}"  /></label>
+                    </div>
+                {% endif %}
+            {% endfor    %}
+        <br/>
+            <input id="avatarsubmit" type="submit" />
+        </form>
+    </div>
+
+
+
+{% endblock %}

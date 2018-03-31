@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+	{% block style %}
+		.bloc1{
+			padding-top: 10vh !important;
+		}
+		img{
+			margin: 1%;
+			width: 7vw;
+			float: left;
+		}
+		{% endblock %}
+
+    {% block bloc1 %}
+	<div class="col-md-8">
+		<div style="float:none;height:10vh;">
+            {% if joueur == 'j1' %}
+				<img class="avatars" src="{{ asset(joueur2.UserImage) }}" alt="">
+				<p>{{ joueur2.Username }}<br/>Score : {{ joueur2.UserWin }}</p><br/>
+            {% elseif joueur == 'j2' %}
+				<img class="avatars" src="{{ asset(joueur1.UserImage) }}" alt="">
+				<p>{{ joueur1.Username }}<br/>Score : {{ joueur1.UserWin }}</p><br/>
+            {% endif %}
+
+			<p style="float:right;">Manche : {{ partie.manche }}</p>
+		</div>
+
+		<div id="objectifs" class="col-md-12" style="width:100vw;text-align:center;">
+			{% set who = 0 %}
+            {% for carte in objectifs %}
+				<span style=" float:left;">
+					<img src="{{ asset(carte.CarteImg) }}" alt="">
+					<img class="{{ attribution[who] }}" src="{{ asset("asset/img/jeton/"~carte.Id~".png") }}" alt="" style="width:1vw;float:left;">
+				</span>
+				{% set who = who+1 %}
+            {% endfor %}
+		</div>
+		<div class="col-2" id="actions">
+
+		</div>
+		<div id="texte_action" class="col-8" style="text-align:center;">
+			{% if message_fin != null %}
+                {% if message_fin == 'Aucun vainqueur' %}
+					<p>{{ message_fin }}</p>
+					<form method="post" action="{{ path('afficher_partie', {'id': partie.id }) }}">
+						<input type="submit" value="Passer à la manche suivante" name="manche_suivante" class="btn btn-primary">
+					</form>
+                {% else %}
+					<p>{{ message_fin }}</p>
+					<a href="#">Retour à votre profil</a>
+                {% endif %}
+            {% endif %}
+		</div>
+
+		<div>
+            {% if action_dispo != null %}
+				<form method="post" action="{{ path('afficher_partie', {'id': partie.id }) }}">
+					<div class="form-group">
+						<input type="hidden" value="{{ partie.id }}" name="id_partie">
+						<select name="action" class="form-control">
+							<option value="" disabled selected hidden>Choisir Action</option>
+                            {% for action in action_dispo %}
+								<option value="{{ action }}">{{ action }}</option>
+                            {% endfor %}
+						</select>
+						<input type="submit" class="btn btn-primary" value="Valider action">
+					</div>
+				</form>
+
+            {% else %}
+				<p>Vous n'avez pas la main, vous ne pouvez pas accèder à vos actions</p>
+            {% endif %}
+
+			<h3>Vos Cartes :</h3>
+		</div>
+		<div style="text-align:center;">
+            {% for carte in main %}
+				<span class="text-white" style="display:inline-block;"><img src="{{ asset(carte.img) }}" alt=""></span>
+            {% endfor %}
+		</div>
+		<div style="float:none;">
+            {% if joueur == 'j2' %}
+				<img class="avatars" src="{{ asset(joueur2.UserImage) }}" alt="">
+				<p>{{ joueur2.Username }}<br/>Score : {{ joueur2.UserWin }}</p></p><br/>
+            {% elseif joueur == 'j1' %}
+				<img class="avatars" src="{{ asset(joueur1.UserImage) }}" alt="">
+				<p>{{ joueur1.Username }}<br/>Score : {{ joueur1.UserWin }}</p></p><br/>
+            {% endif %}
+
+            {% for action in action_dispo %}
+				<img src="{{ asset('asset/img/joueur/'~action~'.png') }}" alt="" style="width:5vw;">
+            {% endfor %}
+			{% for action in action_indispo %}
+				<img src="{{ asset('asset/img/off/'~action~'.png') }}" alt="" style="width:5vw;">
+			{% endfor %}
+		</div>
+	</div>
+
+
+{% endblock %}

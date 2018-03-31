@@ -1,0 +1,18 @@
+<h2>Chat Global</h2>
+{% for message in chat %}
+    {% if message.PseudoId == joueur.Id %}
+        <div class="message">
+            <img class="avatars" src="{{ asset(joueur.UserImage)}}" alt=""><h5>Moi : </h5> <p>{{ message.MessageGlobal }}</p>
+            <br>
+        </div>
+
+    {% endif %}
+    {% for tjoueurs in joueurs %}
+        {% if message.PseudoId == tjoueurs.Id and message.PseudoId != joueur.Id  %}
+            <div class="message">
+                <img class="avatars" src="{{ asset(tjoueurs.UserImage)}}" alt=""><h5>{{ tjoueurs.Username }} : </h5><p>{{ message.MessageGlobal }}</p>
+                <br>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endfor %}

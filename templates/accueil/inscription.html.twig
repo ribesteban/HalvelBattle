@@ -1,0 +1,39 @@
+{% extends 'accueil/nonco_base.html.twig' %}
+
+{% block title %}
+    S'inscrire à Halvel Battle
+{% endblock %}
+
+{% block style %}
+    .bloc1{
+        background-image: url({{ asset('img/fond_connexion.jpg') }});
+        max-height:95vh;
+    }
+    .element{
+        float: left;
+        margin-bottom: -1vh;
+
+    }
+    #boutton{
+        background-image: url({{ asset('img/inscription.png') }});
+    }
+    centaure{
+        height:39vh;
+    }
+{% endblock %}
+
+{% block bloc1 %}
+    <div class="col-md-5 element">
+        <img id="centaure" src="{{ asset('img/centaure.png') }}" alt="Halvel Battle"/>
+    </div>
+    <div class="col-md-5 element">
+        {{ form_start(form) }}
+        {{ form_row(form.username) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.password.first) }}
+        {{ form_row(form.password.second) }}
+
+        <button type="submit">S'inscrire !</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

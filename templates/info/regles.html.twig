@@ -1,0 +1,336 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Règles du jeu
+{% endblock %}
+
+{% block style %}
+    .bloc1{
+        background-image: url({{ asset('img/regles/fond.jpg') }});
+
+    }
+    #z1{
+         padding-top: 8vh !important;
+    }
+    #button{
+        padding-left:5vw;
+        padding-right:5vw;
+        margin-bottom:5vh;
+    }
+    #button img{
+        margin: 1%;
+        cursor: pointer;
+    }
+    .unselected{
+        opacity: 0.5;
+    }
+    h2{
+        cursor:pointer;
+    }
+
+{% endblock %}
+
+{% block script %}
+    $(document).ready(function(){
+        $(".cartes").hide();
+        $(".actions").hide();
+        $(".points").hide();
+
+        $("#txttutoriel").hide();
+        $("#txtcartes").hide();
+        $("#txtactions").hide();
+        $("#txtpoints").hide();
+
+        $("#buttontutoriel").click(function(){
+            $(".tutoriel").show();
+            $(".cartes").hide();
+            $(".actions").hide();
+            $(".points").hide();
+
+            $("#buttontutoriel").removeClass("unselected");
+            $("#buttoncartes").addClass("unselected");
+            $("#buttonactions").addClass("unselected");
+            $("#buttonpoints").addClass("unselected");
+
+            $("#txttutoriel").hide();
+            $("#txtcartes").hide();
+            $("#txtactions").hide();
+            $("#txtpoints").hide();
+        });
+        $("#buttoncartes").click(function(){
+            $(".tutoriel").hide();
+            $(".cartes").show();
+            $(".actions").hide();
+            $(".points").hide();
+
+            $("#buttontutoriel").addClass("unselected");
+            $("#buttoncartes").removeClass("unselected");
+            $("#buttonactions").addClass("unselected");
+            $("#buttonpoints").addClass("unselected");
+
+            $("#txttutoriel").hide();
+            $("#txtcartes").hide();
+            $("#txtactions").hide();
+            $("#txtpoints").hide();
+        });
+        $("#buttonactions").click(function(){
+            $(".tutoriel").hide();
+            $(".cartes").hide();
+            $(".actions").show();
+            $(".points").hide();
+
+            $("#buttontutoriel").addClass("unselected");
+            $("#buttoncartes").addClass("unselected");
+            $("#buttonactions").removeClass("unselected");
+            $("#buttonpoints").addClass("unselected");
+
+            $("#txttutoriel").hide();
+            $("#txtcartes").hide();
+            $("#txtactions").hide();
+            $("#txtpoints").hide();
+        });
+        $("#buttonpoints").click(function(){
+            $(".tutoriel").hide();
+            $(".cartes").hide();
+            $(".actions").hide();
+            $(".points").show();
+
+            $("#buttontutoriel").addClass("unselected");
+            $("#buttoncartes").addClass("unselected");
+            $("#buttonactions").addClass("unselected");
+            $("#buttonpoints").removeClass("unselected");
+
+            $("#txttutoriel").hide();
+            $("#txtcartes").hide();
+            $("#txtactions").hide();
+            $("#txtpoints").hide();
+        });
+
+        $("h2.tutoriel").click(function(){
+            $("#txttutoriel").show();
+        });
+        $("h2.cartes").click(function(){
+            $("#txtcartes").show();
+        });
+        $("h2.actions").click(function(){
+            $("#txtactions").show();
+        });
+        $("h2.points").click(function(){
+            $("#txtpoints").show();
+        });
+    });
+{% endblock %}
+
+{% block bloc1 %}
+
+   <div class="col-md-7 colonne">
+       <img class="tutoriel" src="{{ asset("img/regles/video1.png") }}" alt="Tutoriel">
+       <img class="cartes" src="{{ asset("img/regles/video2.png") }}" alt="Cartes">
+       <img class="actions" src="{{ asset("img/regles/video3.png") }}" alt="Actions">
+       <img class="points" src="{{ asset("img/regles/video4.png") }}" alt="Points">
+
+       <h2 class="tutoriel">Tutoriel complet : Dérouler le texte</h2>
+       <h2 class="cartes">Distribution : Dérouler le texte</h2>
+       <h2 class="actions">Les actions : Dérouler le texte</h2>
+       <h2 class="points">Comptage des points : Dérouler le texte</h2>
+
+       <div id="txttutoriel" class="regles">
+           <p>Pour remporter la bataille d’Halvel, ralliez à votre cause 4 créatures fantastiques, ou 11 (ou plus) points de puissance. Dans le rôle de chefs de guerre, vous et votre adversaire allez jouer chacun votre tour. Chacun réalisera des actions grâce aux différentes cartes d'objet obtenues. Celles-ci vous permettront de rallier à votre cause les créatures. Le chef de guerre comptant le plus de points remporte la bataille !</p>
+            <h3>Mise en place du jeu :</h3>
+
+           <p>
+               - Alignez les 7 cartes de créatures entre les deux joueurs, de gauche à droite en les ordonnant de la plus faible carte à la plus forte.<br/>
+               - Placez 1 jeton de victoire au centre de chaque carte créature.<br/>
+               - Formez une pile avec toutes les cartes d'objet, face cachée, que vous placez à côté de la rangée des créatures.<br/>
+               - Chaque joueur prend 4 jetons d'action de la même couleur, face colorée visible, et il les place devant lui.<br/>
+               - Le plus jeune joueur est désigné comme premier joueur.<br/>
+           </p>
+
+          <h3>Le jeu se joue en une ou plusieurs manches. Chaque manche est constituée de trois phases jouées dans l'ordre suivant :</h3>
+           <p>
+               Phase 1 : Distribuer. <br/>
+               Phase 2 : Action. <br/>
+               Phase 3 : Décompte des points et mise à jour. <br/>
+               Si un joueur atteint l'objectif de victoire lors de la phase de décompte des points, la partie se termine immédiatement. Si aucun des joueurs n'a atteint l'objectif, une nouvelle manche est jouée. La partie se poursuit jusqu'à ce qu'un des joueurs l'emporte.
+
+           </p>
+
+           <h3>Phase 1 : Distribuer</h3>
+           <p>
+               Le premier joueur mélange les 21 cartes d'objet pour former une pile, face cachée, et il retire au hasard une carte qu'il remet dans la boîte sans la regarder. Cette carte ne sera pas utilisée pendant cette manche. Aucun des joueurs ne peut la regarder.<br/>
+               Distribuez à chaque joueur 6 cartes d'objet comme main de départ. Les cartes ne doivent pas être montrées à l'adversaire.<br/>
+               Formez une pile avec les cartes d'objets restantes (« la pioche des objets »), et placez-la à côté de la rangée des créatures.
+           </p>
+
+           <h3>Phase 2 : Action</h3>
+           <p>
+               En commençant par le premier joueur, les joueurs vont jouer chacun leur tour (Joueur A → Joueur B → Joueur A → Joueur B → et ainsi de suite) jusqu'à ce que les deux joueurs aient joué 4 tours.
+               Lors de votre tour, vous devez piocher une carte de la pioche des objets, et ensuite vous réalisez une action. Il n'y a pas d'ordre fixe pour les actions.
+               Lorsque vous réalisez une action, vous choisissez 1 de vos jetons d'action face colorée visible et vous réalisez l'action correspondante. Après avoir résolu l'action, retournez le jeton face cachée. Vous ne pouvez pas choisir de jetons face cachée (chacun des jetons d'action des joueurs ne sera utilisé qu'un seule fois pendant la manche).
+
+           </p>
+           <h5>Les 4 actions dans Halvel Battle sont :</h5>
+
+           <h5>1 – Secret :</h5>
+           <p>Choisissez 1 carte de votre main, et placez-la face cachée sous le jeton secret. Cette carte sera révélée lors de la phase de décompte des points et elle rapportera des points. Vous pouvez regarder cette carte à tout moment dans la partie.</p>
+           <h5>2 – Compromis :</h5>
+           <p>Choisissez 2 cartes de votre main, et placez-les face cachée sous le jeton de compromis. Ces cartes ne rapporteront pas de points lors de cette manche. Vous pouvez regarder ces cartes à tout moment pendant la partie.</p>
+           <h5>3 – Cadeau :</h5>
+           <p> Choisissez 3 cartes de votre main, et placez-les face visible devant vous. Votre adversaire choisit 1 carte parmi celles-ci et il la place de son côté du plateau, à côté de la créature correspondante. Placez ensuite les 2 cartes de votre côté, à côté des créatures correspondantes. Ces cartes rapporteront des points.</p>
+           <h5>4 – Concurrence :</h5>
+           <p>Choisissez 4 cartes de votre main et placez-les face visible devant vous. Vous divisez ces cartes en deux séries comprenant chacune 2 cartes. Votre adversaire choisit 1 série et place ces 2 cartes de son côté de la ligne des créatures à côté des créatures correspondantes. Placez ensuite les 2 cartes restantes de votre côté, à côté des créatures correspondantes. Ces cartes rapporteront des points.</p>
+
+            <h3>
+                Phase 3 : Décompte des points et mise à jour
+            </h3>
+           <p>
+               Après que les joueurs ont réalisé leurs 4 actions, le jeu passe à la phase 3.<br/>
+               Les deux joueurs révèlent la carte qu'ils ont placée sous le jeton secret, et ils placent cette carte de leur côté du plateau de jeu, à côté de la créature correspondante.<br/>
+               Ensuite, comparez le nombre de cartes d'objet de chaque côté de chaque créatures :<br/>
+               Le joueur qui rallie la créature dans son camp est celui qui a posé le plus de carte objet correspondant à la créature en question. Déplacez le jeton de victoire correspondant sur le côté vainqueur (vers le chef de guerre victorieux
+               Égalité des deux côtés ou pas de carte: ne déplacez pas le jeton de victoire.<br/>
+               Après le décompte des points, les joueurs calculent le nombre de créatures qu'ils ont gagné et ils calculent la somme des points de puissance. Si un des chefs de guerre a atteint l'objectif de victoire, la partie se termine immédiatement. (Voir la partie: Fin de la partie).
+           </p>
+
+           <h5>Si aucun des joueurs n'a atteint l'objectif de victoire, passez à la mise à jour:</h5>
+
+           <p>
+               • Reprenez TOUTES les cartes d'objet sur la table et dans la boîte, formez une pile face cachée, mélangez, et mettez-la de côté.<br/>
+               • Les jetons de victoire restent à leur place. Remarque: ne les remettez pas au centre de la carte créature.<br/>
+               • Les chefs de guerre retournent leurs jetons d'action face visible.<br/>
+               • Le deuxième joueur devient le nouveau premier joueur.<br/>
+               • Vous êtes prêt pour démarrer la nouvelle manche.<br/>
+           </p>
+
+
+            <h3>Fin de la bataille</h3>
+           <p>
+               • Si un joueur a remporté 4 créatures ou 11 (ou plus) de points de puissance, la partie se termine immédiatement.<br/>
+               • Si un seul joueur atteint l'objectif de victoire, il est le vainqueur.<br/>
+               • Si un joueur a remporté 4 créatures et que l'autre a remporté 11 (ou plus) points de puissance, ce dernier est le vainqueur.<br/>
+               Exemple: Le joueur du haut remporte 3 créatures et a un total de 8 points de puissance. Le joueur du bas a remporté 3 créatures aussi mais avec un total de 11 points de puissance. Comme le joueur du bas a atteint un objectif de victoire, la partie se termine immédiatement. Le joueur du bas est déclaré vainqueur.
+
+           </p>
+
+       </div>
+       <div id="txtcartes" class="regles">
+           <h3>Distribuer</h3>
+           <p>
+               Le premier joueur mélange les 21 cartes d'objet pour former une pile, face cachée, et il retire au hasard une carte qu'il remet dans la boîte sans la regarder. Cette carte ne sera pas utilisée pendant cette manche. Aucun des joueurs ne peut la regarder.<br/>
+               Distribuez à chaque joueur 6 cartes d'objet comme main de départ. Les cartes ne doivent pas être montrées à l'adversaire.<br/>
+               Formez une pile avec les cartes d'objets restantes (« la pioche des objets »), et placez-la à côté de la rangée des créatures.
+           </p>
+
+       </div>
+       <div id="txtactions" class="regles">
+           <h3>Action</h3>
+           <p>
+               En commençant par le premier joueur, les joueurs vont jouer chacun leur tour (Joueur A → Joueur B → Joueur A → Joueur B → et ainsi de suite) jusqu'à ce que les deux joueurs aient joué 4 tours.
+               Lors de votre tour, vous devez piocher une carte de la pioche des objets, et ensuite vous réalisez une action. Il n'y a pas d'ordre fixe pour les actions.
+               Lorsque vous réalisez une action, vous choisissez 1 de vos jetons d'action face colorée visible et vous réalisez l'action correspondante. Après avoir résolu l'action, retournez le jeton face cachée. Vous ne pouvez pas choisir de jetons face cachée (chacun des jetons d'action des joueurs ne sera utilisé qu'un seule fois pendant la manche).
+
+           </p>
+           <h5>Les 4 actions dans Halvel Battle sont :</h5>
+
+           <h5>1 – Secret :</h5>
+           <p>Choisissez 1 carte de votre main, et placez-la face cachée sous le jeton secret. Cette carte sera révélée lors de la phase de décompte des points et elle rapportera des points. Vous pouvez regarder cette carte à tout moment dans la partie.</p>
+           <h5>2 – Compromis :</h5>
+           <p>Choisissez 2 cartes de votre main, et placez-les face cachée sous le jeton de compromis. Ces cartes ne rapporteront pas de points lors de cette manche. Vous pouvez regarder ces cartes à tout moment pendant la partie.</p>
+           <h5>3 – Cadeau :</h5>
+           <p> Choisissez 3 cartes de votre main, et placez-les face visible devant vous. Votre adversaire choisit 1 carte parmi celles-ci et il la place de son côté du plateau, à côté de la créature correspondante. Placez ensuite les 2 cartes de votre côté, à côté des créatures correspondantes. Ces cartes rapporteront des points.</p>
+           <h5>4 – Concurrence :</h5>
+           <p>Choisissez 4 cartes de votre main et placez-les face visible devant vous. Vous divisez ces cartes en deux séries comprenant chacune 2 cartes. Votre adversaire choisit 1 série et place ces 2 cartes de son côté de la ligne des créatures à côté des créatures correspondantes. Placez ensuite les 2 cartes restantes de votre côté, à côté des créatures correspondantes. Ces cartes rapporteront des points.</p>
+
+       </div>
+       <div id="txtpoints" class="regles">
+           <h3>Décompte des points et mise à jour</h3>
+           <p>
+               Après que les joueurs ont réalisé leurs 4 actions, le jeu passe à la phase 3.<br/>
+               Les deux joueurs révèlent la carte qu'ils ont placée sous le jeton secret, et ils placent cette carte de leur côté du plateau de jeu, à côté de la créature correspondante.<br/>
+               Ensuite, comparez le nombre de cartes d'objet de chaque côté de chaque créatures :<br/>
+               Le joueur qui rallie la créature dans son camp est celui qui a posé le plus de carte objet correspondant à la créature en question. Déplacez le jeton de victoire correspondant sur le côté vainqueur (vers le chef de guerre victorieux
+               Égalité des deux côtés ou pas de carte: ne déplacez pas le jeton de victoire.<br/>
+               Après le décompte des points, les joueurs calculent le nombre de créatures qu'ils ont gagné et ils calculent la somme des points de puissance. Si un des chefs de guerre a atteint l'objectif de victoire, la partie se termine immédiatement. (Voir la partie: Fin de la partie).
+           </p>
+
+           <h5>Si aucun des joueurs n'a atteint l'objectif de victoire, passez à la mise à jour:</h5>
+
+           <p>
+               • Reprenez TOUTES les cartes d'objet sur la table et dans la boîte, formez une pile face cachée, mélangez, et mettez-la de côté.<br/>
+               • Les jetons de victoire restent à leur place. Remarque: ne les remettez pas au centre de la carte créature.<br/>
+               • Les chefs de guerre retournent leurs jetons d'action face visible.<br/>
+               • Le deuxième joueur devient le nouveau premier joueur.<br/>
+               • Vous êtes prêt pour démarrer la nouvelle manche.<br/>
+           </p>
+
+
+           <h3>Fin de la bataille</h3>
+           <p>
+               • Si un joueur a remporté 4 créatures ou 11 (ou plus) de points de puissance, la partie se termine immédiatement.<br/>
+               • Si un seul joueur atteint l'objectif de victoire, il est le vainqueur.<br/>
+               • Si un joueur a remporté 4 créatures et que l'autre a remporté 11 (ou plus) points de puissance, ce dernier est le vainqueur.<br/>
+               Exemple: Le joueur du haut remporte 3 créatures et a un total de 8 points de puissance. Le joueur du bas a remporté 3 créatures aussi mais avec un total de 11 points de puissance. Comme le joueur du bas a atteint un objectif de victoire, la partie se termine immédiatement. Le joueur du bas est déclaré vainqueur.
+
+           </p>
+
+       </div>
+
+       <div id="button">
+           <img id="buttontutoriel" src="{{ asset("img/regles/tutoriel.png") }}" alt="">
+           <img class="unselected" id="buttoncartes" src="{{ asset("img/regles/cartes.png") }}" alt="">
+           <img class="unselected" id="buttonactions" src="{{ asset("img/regles/actions.png") }}" alt="">
+           <img class="unselected" id="buttonpoints" src="{{ asset("img/regles/points.png") }}" alt="">
+       </div>
+
+   </div>
+    <div class="col-md-4 colonne">
+        <div class="chat">
+
+            <div id="chat">
+                <h2>Chat Global</h2>
+                {% for message in chat %}
+
+                    {% if message.PseudoId == joueur.Id %}
+                        <div class="message">
+                            <img class="avatars" src="{{ asset(joueur.UserImage)}}" alt=""><h5>Moi : </h5> <p>{{ message.MessageGlobal }}</p>
+                            <br>
+                        </div>
+
+                    {% endif %}
+                    {% for tjoueurs in joueurs %}
+                        {% if message.PseudoId == tjoueurs.Id and message.PseudoId != joueur.Id  %}
+                            <div class="message">
+                                <img class="avatars" src="{{ asset(tjoueurs.UserImage)}}" alt=""><h5>{{ tjoueurs.Username }} : </h5><p>{{ message.MessageGlobal }}</p>
+                                <br>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            <input class="chatinput" type="text" placeholder="Votre message...">
+            <input class="chatsubmit" type="submit" value="envoyer">
+        </div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            function envoyer(message){
+                $.ajax({
+                    url: "{{ path("new_message") }}",
+                    method: 'post',
+                    data: {'message': message}
+                });
+            }
+
+
+            $('.chatsubmit').click(function() {
+                message = $('.chatinput').val();
+                envoyer(message);
+                $('.chatinput').val("");
+            });
+
+            setInterval(function () {
+                $("#chat").load("{{ path('chat') }}");
+            }, 1000);
+        });
+    </script>
+{% endblock %}

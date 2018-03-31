@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Modifier vos informations
+{% endblock %}
+
+{% block style %}
+    .bloc1{
+    background-image: url({{ asset('img/fond3.png') }});
+    }
+    #boutton{
+    margin-top: 10vh;
+    }
+    img{
+    width:8vw;
+    text-align: left;
+    }
+{% endblock %}
+
+{% block bloc1 %}
+
+    <div class="col-md-4 info colonne">
+        <div id="infojoueur">
+            <div id="img">
+                <a href="{{ path("modifier_avatar") }}"><img src="{{ asset(joueur.UserImage) }}" alt=""></a>
+            </div>
+            <div id="joueur">
+                <h2>{{ joueur.Username }}</h2>
+            </div>
+        </div>
+
+
+        <div id="stats">
+            <h2>Statistiques</h2>
+            <p>Nombre de parties jouées : {{ joueur.UserJouees }}</p>
+            <p>Nombre de parties gagnées : {{ joueur.UserWin }}</p>
+            <p>Nombre de parties perdues : {{ joueur.userJouees - joueur.UserWin }}</p>
+            {% if joueur.userJouees != 0 %}
+                <p>Ratio : {{ ((joueur.UserWin / joueur.userJouees)|round(1, 'floor'))*100 }}% de victoire</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-md-4 info section">
+
+    <form method="post" action="{{ path('update_username') }}">
+        <div>
+            <h2 class="h2change">Changer de pseudo :</h2>
+            <input class="forminput" type="text" value="{{ app.user.username }}" name="username" placeholder="Nouveau Pseudo">
+            <input class="formsubmit" type="submit" value="Changer">
+        </div>
+    </form>
+
+    <form method="post" action="{{ path('update_email') }}">
+        <div>
+            <h2 class="h2change">Changer d'email :</h2>
+            <input class="forminput" type="email" value="{{ app.user.email }}" name="email" placeholder="Nouvel email">
+            <input class="formsubmit" type="submit" value="Changer">
+        </div>
+    </form>
+
+    <form method="post" action="{{ path('update_password') }}">
+        <div>
+            <h2 class="h2change">Changer de mot de passe :</h2>
+            <input class="mdpforminput" type="password" name="premier" placeholder="Entrer nouveau mot de passe"><br>
+            <input class="mdpforminput" type="password" name="deuxieme" placeholder="Répéter mot de passe">
+            <input class="mdpformsubmit" type="submit" value="Changer">
+        </div>
+    </form>
+    </div>
+
+{% endblock %}

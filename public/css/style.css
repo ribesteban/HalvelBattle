@@ -1,0 +1,232 @@
+/*Partie déconnectée*/
+
+
+/*Partie connectée*/
+#navbar ul li a {
+    display: inline;
+    font-family: 'Cinzel', serif;
+}
+#infojoueur{
+    height: 20vh;
+    margin-bottom: 3vh;
+    background-color: #181E2C;
+    border-radius: 10px;
+}#infojoueurs{
+     height: 20vh;
+     width: 40vw;
+     margin-bottom: 3vh;
+     background-color: #181E2C;
+     border-radius: 10px;
+ }
+#img{
+    margin-top: 2vh;
+    padding-left: 1vw;
+    width:10vw;
+    height: 20vh;
+    float: left;
+
+}
+#joueur{
+    margin-top: 3vh;
+    width:18vw;
+    height: 20vh;
+    float: left;
+
+}
+#joueurs{
+    margin-top: 3vh;
+    width:25vw;
+    height: 20vh;
+    float: left;
+
+}
+.avatars{
+    width: 4vw;
+}
+#stats{
+    padding-top: 3vh;
+    padding-bottom: 3vh;
+    margin-top: 5vh;
+    border-radius: 10px;
+    background-color: #181E2C;
+}
+#stats p{
+    text-align: justify;
+}
+.info{
+    width: 30vw;
+    float: left;
+    margin: 1%;
+
+    border-radius: 10px;
+}
+.section{
+    background-color: #181E2C;
+}
+h2{
+    color:white;
+    font-size: 2em;
+
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+}
+h3{
+    color: white;
+    font-family: 'Cinzel', serif;
+    font-size: 1.5em;
+    margin: 1%;
+}
+h4{
+    color:white;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.3em;
+}
+h5{
+    color: white;
+    font-family: 'Cinzel', serif;
+    font-size: 1.1em;
+    padding-top: 1vh;
+    margin-left: 5vw;
+    text-align: left;
+}
+hr{
+    margin-top: 3vh;
+    background-color:#0c5460;
+    width:100%;
+}
+a{
+    color:white;
+}
+a:hover{
+    color:#bbbbbb;
+    text-decoration: none;
+}
+input{
+    background-color: ;
+}
+.regles{
+    background-color: #1B202F;
+    color:white;
+    padding:2%;
+    border-radius: 15px;
+    font-family: 'Poppins', sans-serif;
+}
+.chat{
+    position:fixed;
+    min-height: 20vh;
+    width: 20vw;
+    background-color: #1B202F;
+    margin-left: 10vw;
+    margin-top:5vh;
+    padding: 1%;
+    border-radius: 10px;
+}
+.colonne{
+    float: left;
+}
+.chat img{
+    float: left;
+}
+.message{
+    margin-top:1vh;
+    width: 18vw;
+    height: 8vh;
+    background-color: #151020;
+    border-radius: 40px;
+}
+.chatinput{
+    height: 5vh;
+    margin-left: -6vh;
+    text-align: left;
+    margin-top: 5vh;
+    float: left;
+    background-color: #151020;
+    color: white;
+    border: 0 solid;
+    border-radius: 10px 0px 0px 10px;
+    padding-left: 10px;
+}
+ .chatsubmit{
+    height: 5vh;
+    margin-top: 5vh;
+    float:left;
+    width: 5vw;
+     background-color: #151020;
+     color: white;
+     border: 0px solid;
+     border-radius: 0px 10px 10px 0px;
+}
+#avatarsubmit{
+    height: 5vh;
+    float:none;
+    margin-top: 2vh;
+    width: 5vw;
+    background-color: #151020;
+    color: white;
+    border: 0px solid;
+    border-radius: 10px;
+}
+#avatrsubmit:hover{
+    background-color:#303851;
+}
+#form_avatar{
+    background-color: #181E2C;
+    border-radius: 10px;
+    margin: 0vh 10vw 10vh 10vw;
+    padding: 1%;
+
+}
+.choix{
+    float:left;
+    margin:0.5%;
+    border-radius: 0px 65px 70px 0px;
+    background-color:#10101C;
+}
+.forminput{
+    margin-left: 5vw;
+    height: 5vh;
+    width: 15vw;
+    text-align: left;
+    float: left;
+    background-color: #151020;
+    color: white;
+    border: 0 solid;
+    border-radius: 10px 0px 0px 10px;
+    padding-left: 10px;
+    margin-bottom: 2vh;
+}
+.formsubmit{
+    height: 5vh;
+    float:left;
+    width: 5vw;
+    background-color: #151020;
+    color: white;
+    border: 0px solid;
+    border-radius: 0px 10px 10px 0px;
+    margin-bottom: 2vh;
+}
+.mdpforminput{
+    margin-left: 5vw;
+    height: 5vh;
+    width: 20vw;
+    text-align: left;
+    float: left;
+    background-color: #151020;
+    color: white;
+    border: 0 solid;
+    border-radius: 10px;
+    padding-left: 10px;
+    text-align:center;
+    margin-bottom: 1vh;
+}
+.mdpformsubmit{
+    margin-left: 5vw;
+    height: 5vh;
+    float:left;
+    width: 20vw;
+    background-color: #151020;
+    color: white;
+    border: 0px solid;
+    border-radius: 10px;
+    margin-bottom: 2vh;
+}

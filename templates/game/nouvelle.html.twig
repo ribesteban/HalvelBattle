@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <form method="post" action="{{ path('creer_partie') }}">
+        <div>
+            Choisissez l'adversaire :
+            <select name="adversaire">
+                <option value=""> Choisir</option>
+                {% for user in joueurs %}
+                    <option value="{{ user.id }}">{{ user.username }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <input type="submit" value="Créer la partie">
+        </div>
+    </form>
+{% endblock %}

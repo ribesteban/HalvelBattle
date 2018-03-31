@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Bienvenue dans Halvel Battle
+{% endblock %}
+
+{% block style %}
+    .bloc1{
+    background-image: url({{ asset('img/fond.jpg') }});
+    }
+    #boutton{
+    margin-top: 10vh;
+    }
+{% endblock %}
+
+{% block bloc1 %}
+    <div class="col-md-12">
+        <img src="{{ asset('img/logo_blanc.png') }}" alt="Halvel Battle"/>
+    </div>
+    <div class="col-md-12" id="boutton">
+        <a href="{{  path('nouvelle_partie') }}"><img src="{{ asset('img/jouer.png') }}" alt="Jouer"/></a>
+    </div>
+
+{% endblock %}

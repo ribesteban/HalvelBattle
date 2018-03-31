@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {% for tjoueurs in joueurs %}
+        {% if tjoueurs.Id == id %}
+            Profil de {{ tjoueurs.Username }}
+        {% endif %}
+    {% endfor %}
+{% endblock %}
+
+{% block style %}
+    .bloc1{
+    background-image: url({{ asset('img/fond3.png') }});
+    }
+    #boutton{
+    margin-top: 10vh;
+    }
+    img{
+    width:8vw;
+    text-align: left;
+    }
+
+    #modifier{
+    margin:0px !important;
+    text-align:center !important;
+    }
+    .actionjoueur{
+        background-color: #181E2C;
+        border-radius: 10px;
+        float: left;
+        width:18vw;
+        height: 10vh;
+        margin: 1vw;
+        padding-top:3.5vh;
+        cursor:pointer;
+    }
+    .actionjoueur:hover{
+        background-color:#303851;
+    }
+    .actionjoueur p{
+        text-align:center;
+        font-size: 1.3em;
+    font-family: 'Cinzel', serif;
+        margin:0;
+    }
+    .chat{
+        margin-top:0;
+    }
+{% endblock %}
+
+{% block bloc1 %}
+    {% for tjoueurs in joueurs %}
+        {% if tjoueurs.Id == id %}
+            <div class="col-md-7 colonne">
+                <div id="infojoueurs">
+                    <div id="img">
+                        <img src="{{ asset(tjoueurs.UserImage) }}" alt="">
+                    </div>
+                    <div id="joueurs">
+                        <h2>{{ tjoueurs.Username }}</h2>
+                        <p>Nombre de parties jouées : {{ joueur.UserJouees }}</p>
+                        <p>Nombre de parties gagnées : {{ joueur.UserWin }}</p>
+                        <p>Nombre de parties perdues : {{ joueur.userJouees - joueur.UserWin }}</p>
+                        {% if joueur.userJouees != 0 %}
+                            <p>Ratio : {{ ((joueur.UserWin / joueur.userJouees)|round(1, 'floor'))*100 }}% de victoire</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                    {% set ok = 'none' %}
+                    {% for ami in amis %}
+                        {% if id == ami.IdAmi2 %}
+                            <a href="{{ path("supprimerami", {'id': tjoueurs.Id}) }}"><div class="actionjoueur">
+                                <p>Supprimer cet ami</p>
+                            </div></a>
+                            {% set ok = 'ok' %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if ok == 'none' %}
+                        <a href="{{ path("ajouterami", {'id': tjoueurs.Id}) }}"><div class="actionjoueur">
+                            <p>Ajouter en ami</p>
+                        </div></a>
+                    {% endif %}
+                
+                <div class="actionjoueur">
+                    <p>Défier</p>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+    <div class="col-md-4 colonne">
+        <div class="chat">
+            <h2>Chat Global</h2>
+            {% for message in chat %}
+
+                {% if message.PseudoId == joueur.Id %}
+                    <div class="message">
+                        <img class="avatars" src="{{ asset(joueur.UserImage)}}" alt=""><h5>Moi : </h5> <p>{{ message.MessageGlobal }}</p>
+                        <br>
+                    </div>
+
+                {% endif %}
+                {% for tjoueurs in joueurs %}
+                    {% if message.PseudoId == tjoueurs.Id and message.PseudoId != joueur.Id  %}
+                    <a href="{{ path("joueur", {'id': tjoueurs.Id }) }}">
+                        <div class="message">
+                            <img class="avatars" src="{{ asset(tjoueurs.UserImage)}}" alt=""><h5>{{ tjoueurs.Username }} : </h5><p>{{ message.MessageGlobal }}</p>
+                            <br>
+                        </div>
+                    </a>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+            <input class="chatinput" type="text" placeholder="Votre message...">
+            <button class="chatsubmit">Envoyer</button>
+        </div>
+    </div>
+{% endblock %}
