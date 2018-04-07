@@ -218,8 +218,7 @@
                     $("#actionsa2").load("{{ path('concurrence_suite2', {'joueur': joueur,'idpartie': idpartie}) }}");
                     {% endif %}
                     $("#dispo").load("{{ path('afficher_actiondispo', {'idpartie': idpartie, 'joueur': joueur}) }}");
-                    clearInterval(test);
-                }, 5000);
+                }, 10000);
             });
 		</script>
 

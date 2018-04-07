@@ -14,8 +14,16 @@
         <p>{{ joueur1.Username }}<br/>Score : {{ joueur1.UserWin }}</p></p><br/>
     {% endif %}
 
+    {% if concurrenceJ1 == 2 or concurrenceJ2 == 2 %}
+    <p>Sélectionnez une paire</p>
+    {% elseif cadeauJ1 == 2 or cadeauJ2 == 2 %}
+    <p>Sélectionnez une carte cadeau</p>
+    {% endif %}
+
     {% for action in action_dispo %}
-        <img class="{{ action }} actions" src="{{ asset('asset/img/joueur/'~action~'.png') }}" alt="" style="width:4vw;">
+        {% if concurrenceJ1 != 2 and concurrenceJ2 != 2 and cadeauJ1 != 2 and cadeauJ2 != 2 %}
+            <img class="{{ action }} actions" src="{{ asset('asset/img/joueur/'~action~'.png') }}" alt="" style="width:4vw;">
+        {% endif %}
     {% endfor %}
 
     {% if action_dispo == null %}
@@ -36,19 +44,18 @@
 
             });
             $('.dissimulation').click(function () {
-                clearInterval(test);
+
                 $("#actions").load("{{ path('dissimulation', {'carte1': 22, 'carte2': 22, 'joueur': joueur, 'idpartie': idpartie}) }}");
                 action = 2;
                 nbCarte = 2;
             });
             $('.cadeau').click(function () {
-                clearInterval(test);
+
                 $("#actions").load("{{ path('cadeau', {'carte1': 22, 'carte2': 22, 'carte3': 22, 'joueur': joueur, 'idpartie': idpartie}) }}");
                 action = 3;
                 nbCarte = 3;
             });
             $('.concurrence').click(function () {
-                clearInterval(test);
                 $("#actions").load("{{ path('concurrence', {'carte1': 22, 'carte2': 22, 'carte3': 22, 'carte4': 22, 'joueur': joueur, 'idpartie': idpartie}) }}");
                 action = 4;
                 nbCarte = 4;
