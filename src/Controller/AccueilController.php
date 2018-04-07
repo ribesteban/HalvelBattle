@@ -30,8 +30,9 @@ class AccueilController extends Controller
     /**
      * @Route ("/accueil/inscription", name="inscription")
      */
-    public function inscription(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function inscription(Request $request, UserPasswordEncoderInterface $passwordEncoder,  \Swift_Mailer $mailer)
     {
+
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
 
@@ -53,6 +54,13 @@ class AccueilController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
+
+            $message = (new \Swift_Message('Hello Email'))
+                ->setFrom('ribesteban@gmail.com')
+                ->setTo($user->getEmail())
+                ->setBody('Bienvenue à Halvel Battle');
+
+            $mailer->send($message);
 
             return $this->redirectToRoute('security_login');
         }

@@ -1,0 +1,46 @@
+<style>
+    div.action{
+        background-color: rgba(36, 43, 63, 0.9);
+        position: absolute;
+        border-radius: 10px;
+        height: 30vh;
+        padding: 1%;
+        margin-left: 10vw;
+
+    }
+    div.action p{
+        text-align: center;
+        font-size: 2em;
+        font-family: 'Cinzel', serif;
+    }
+    .emplacement1, .emplacement2, .emplacement3{
+        width: 7vw;
+        height: 20vh;
+        background-color: rgba(80,80,100,0.5);
+        border-radius: 10px;
+        float:left;
+        margin-left: 1%;
+    }
+    .emplacement1{
+        margin-left: 10vw;
+    }
+    button{
+        margin-left: 5vw;
+        height: 5vh;
+        background-color: #151020;
+        color: white;
+        border: 0px solid;
+        border-radius: 10px;
+        cursor: pointer;
+        margin-top: -5vh;
+    }
+</style>
+<div class="action col-8">
+    <p>Cadeau</p>
+    <div class="emplacement1" id="{{ carte1.Id }}"><img src="{{ asset(carte1.ObjetImg) }}" alt=""></div>
+    <div class="emplacement2" id="{{ carte2.Id }}"><img src="{{ asset(carte2.ObjetImg) }}" alt=""></div>
+    <div class="emplacement3" id="{{ carte3.Id }}"><img src="{{ asset(carte3.ObjetImg) }}" alt=""></div>
+    {% if carte3.Id != 22 %}
+        <a href="{{ path('cadeau_suite', {'carte1': carte1.Id, 'carte2': carte2.Id, 'carte3': carte3.Id, 'joueur': joueur, 'idpartie': idpartie}) }}"><button>Jouer</button></a>
+    {% endif %}
+</div>

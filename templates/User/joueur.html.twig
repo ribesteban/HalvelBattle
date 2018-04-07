@@ -90,29 +90,51 @@
     {% endfor %}
     <div class="col-md-4 colonne">
         <div class="chat">
-            <h2>Chat Global</h2>
-            {% for message in chat %}
+            <div id="chat">
+                <h2>Chat Global</h2>
+                {% for message in chat %}
 
-                {% if message.PseudoId == joueur.Id %}
-                    <div class="message">
-                        <img class="avatars" src="{{ asset(joueur.UserImage)}}" alt=""><h5>Moi : </h5> <p>{{ message.MessageGlobal }}</p>
-                        <br>
-                    </div>
-
-                {% endif %}
-                {% for tjoueurs in joueurs %}
-                    {% if message.PseudoId == tjoueurs.Id and message.PseudoId != joueur.Id  %}
-                    <a href="{{ path("joueur", {'id': tjoueurs.Id }) }}">
+                    {% if message.PseudoId == joueur.Id %}
                         <div class="message">
-                            <img class="avatars" src="{{ asset(tjoueurs.UserImage)}}" alt=""><h5>{{ tjoueurs.Username }} : </h5><p>{{ message.MessageGlobal }}</p>
+                            <img class="avatars" src="{{ asset(joueur.UserImage)}}" alt=""><h5>Moi : </h5> <p>{{ message.MessageGlobal }}</p>
                             <br>
                         </div>
-                    </a>
+
                     {% endif %}
+                    {% for tjoueurs in joueurs %}
+                        {% if message.PseudoId == tjoueurs.Id and message.PseudoId != joueur.Id  %}
+                            <div class="message">
+                                <img class="avatars" src="{{ asset(tjoueurs.UserImage)}}" alt=""><h5>{{ tjoueurs.Username }} : </h5><p>{{ message.MessageGlobal }}</p>
+                                <br>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
+            </div>
             <input class="chatinput" type="text" placeholder="Votre message...">
-            <button class="chatsubmit">Envoyer</button>
+            <input class="chatsubmit" type="submit" value="envoyer">
         </div>
     </div>
+    <script>
+        $(document).ready(function(){
+            function envoyer(message){
+                $.ajax({
+                    url: "{{ path("new_message") }}",
+                    method: 'post',
+                    data: {'message': message}
+                });
+            }
+
+
+            $('.chatsubmit').click(function() {
+                message = $('.chatinput').val();
+                envoyer(message);
+                $('.chatinput').val("");
+            });
+
+            setInterval(function () {
+                $("#chat").load("{{ path('chat') }}");
+            }, 1000);
+        });
+    </script>
 {% endblock %}

@@ -1,0 +1,5 @@
+<img style="margin-right: 3vw;" src="{{ asset('asset/img/pioche.png') }}" alt="">
+{% for carte in main %}
+    <img class="objet" id="{{ carte.id }}" src="{{ asset(carte.img) }}" alt="">
+{% endfor %}
+<br/>

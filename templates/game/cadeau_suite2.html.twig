@@ -1,0 +1,90 @@
+{% if carte1.Id != 22 %}
+<style>
+    div.action{
+        background-color: rgba(36, 43, 63, 0.9);
+        position: absolute;
+        border-radius: 10px;
+        height: 30vh;
+        padding: 1%;
+        margin-left: 10vw;
+
+    }
+    div.action p{
+        text-align: center;
+        font-size: 2em;
+        font-family: 'Cinzel', serif;
+    }
+    .emplacement1, .emplacement2, .emplacement3{
+        width: 7vw;
+        height: 20vh;
+        border-radius: 10px;
+        float:left;
+        margin-left: 1%;
+        cursor: pointer;
+    }
+    .emplacement1{
+        margin-left: 10vw;
+    }
+    .active{
+        -moz-box-shadow: 0px 0px 26px #ffffff;
+        -webkit-box-shadow: 0px 0px 26px #ffffff;
+        box-shadow: 0px 0px 26px #ffffff;
+    }
+    button{
+        margin-left: 5vw;
+        height: 5vh;
+        background-color: #151020;
+        color: white;
+        border: 0px solid;
+        border-radius: 10px;
+        cursor: pointer;
+        margin-top: -5vh;
+    }
+</style>
+<div class="action col-8">
+    <p>Sélectionnez une carte Cadeau</p>
+    <div class="emplacement1" id="{{ carte1.Id }}"><img src="{{ asset(carte1.ObjetImg) }}" alt=""></div>
+    <div class="emplacement2" id="{{ carte2.Id }}"><img src="{{ asset(carte2.ObjetImg) }}" alt=""></div>
+    <div class="emplacement3" id="{{ carte3.Id }}"><img src="{{ asset(carte3.ObjetImg) }}" alt=""></div>
+    <a href="" style="display:none;"><button>Jouer</button></a>
+</div>
+    <script>
+        $(document).ready(function () {
+
+            $('.emplacement1').click(function () {
+                id = $(this).attr('id');
+                $(this).addClass('active');
+                $('.emplacement2').removeClass('active');
+                $('.emplacement3').removeClass('active');
+                $("a").show();
+                var url = "{{ path('cadeau_traitement', {'carte1': 'id', 'joueur': joueur, 'idpartie': idpartie}) }}";
+                url = url.replace("id", id);
+                $("a").attr('href', url);
+            });
+            $('.emplacement2').click(function () {
+                id = $(this).attr('id');
+                $(this).addClass('active');
+                $('.emplacement1').removeClass('active');
+                $('.emplacement3').removeClass('active');
+                $("a").show();
+                var url = "{{ path('cadeau_traitement', {'carte1': 'id', 'joueur': joueur, 'idpartie': idpartie}) }}";
+                url = url.replace("id", id);
+                $("a").attr('href', url);
+            });
+            $('.emplacement3').click(function () {
+                id = $(this).attr('id');
+                $(this).addClass('active');
+                $('.emplacement2').removeClass('active');
+                $('.emplacement1').removeClass('active');
+                $("a").show();
+                var url = "{{ path('cadeau_traitement', {'carte1': 'id', 'joueur': joueur, 'idpartie': idpartie}) }}";
+                url = url.replace("id", id);
+                $("a").attr('href', url);
+            });
+            console.log(id);
+
+
+        });
+    </script>
+
+{% endif %}

@@ -1,0 +1,158 @@
+<div style="text-align:center;padding:0;height: 25vh;" class="col-12" id="main">
+    <img style="margin-right: 3vw;" src="{{ asset('asset/img/pioche.png') }}" alt="">
+    {% for carte in main %}
+        <img class="objet" id="{{ carte.id }}" src="{{ asset(carte.img) }}" alt="">
+    {% endfor %}
+    <br/>
+</div>
+<div class="col-12">
+    {% if joueur == 'j2' %}
+        <img class="avatars" src="{{ asset(joueur2.UserImage) }}" alt="">
+        <p>{{ joueur2.Username }}<br/>Score : {{ joueur2.UserWin }}</p></p><br/>
+    {% elseif joueur == 'j1' %}
+        <img class="avatars" src="{{ asset(joueur1.UserImage) }}" alt="">
+        <p>{{ joueur1.Username }}<br/>Score : {{ joueur1.UserWin }}</p></p><br/>
+    {% endif %}
+
+    {% for action in action_dispo %}
+        <img class="{{ action }} actions" src="{{ asset('asset/img/joueur/'~action~'.png') }}" alt="" style="width:4vw;">
+    {% endfor %}
+
+    {% if action_dispo == null %}
+        <p>Vous n'avez pas la main, vous ne pouvez pas accèder à vos actions</p>
+    {% endif %}
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        action = 0;
+        if (action == 0) {
+            $('.disparition').click(function () {
+
+                $("#actions").load("{{ path('disparition', {'carte1': 22, 'joueur': joueur, 'idpartie': idpartie}) }}");
+                action = 1;
+                nbCarte = 1;
+
+            });
+            $('.dissimulation').click(function () {
+                clearInterval(test);
+                $("#actions").load("{{ path('dissimulation', {'carte1': 22, 'carte2': 22, 'joueur': joueur, 'idpartie': idpartie}) }}");
+                action = 2;
+                nbCarte = 2;
+            });
+            $('.cadeau').click(function () {
+                clearInterval(test);
+                $("#actions").load("{{ path('cadeau', {'carte1': 22, 'carte2': 22, 'carte3': 22, 'joueur': joueur, 'idpartie': idpartie}) }}");
+                action = 3;
+                nbCarte = 3;
+            });
+            $('.concurrence').click(function () {
+                clearInterval(test);
+                $("#actions").load("{{ path('concurrence', {'carte1': 22, 'carte2': 22, 'carte3': 22, 'carte4': 22, 'joueur': joueur, 'idpartie': idpartie}) }}");
+                action = 4;
+                nbCarte = 4;
+            });
+        }
+
+
+        $('.objet').click(function() {
+            var id = $(this).attr('id');
+            console.log(id);
+            if (action == 1 && nbCarte > 0) {
+                var url = "{{ path('disparition', {'carte1': 'id', 'joueur': joueur, 'idpartie': idpartie}) }}";
+                url = url.replace("id", id);
+                console.log(url);
+                $("#actions").load(url);
+                $('#' + id).attr('src', '{{ asset('asset/img/pioche.png') }}');
+                nbCarte = 0;
+            }
+
+
+            if (action == 2 && nbCarte > 0) {
+                if (nbCarte == 2) {
+                    var url = "{{ path('dissimulation', {'carte1': 'id', 'carte2': 22, 'joueur': joueur, 'idpartie': idpartie}) }}";
+                }
+                else if (nbCarte == 1) {
+                    var id1 = $(".emplacement1").attr('id');
+                    var url = "{{ path('dissimulation', {'carte1': 'id1' , 'carte2': 'id', 'joueur': joueur, 'idpartie': idpartie}) }}";
+                    url = url.replace("id1", id1);
+                }
+                url = url.replace("id", id);
+
+                console.log(url);
+                $("#actions").load(url);
+                $('#' + id).attr('src', '{{ asset('asset/img/pioche.png') }}');
+                nbCarte--;
+            }
+
+
+            if (action == 3 && nbCarte > 0) {
+                if (nbCarte == 3) {
+                    var url = "{{ path('cadeau', {'carte1': 'id', 'carte2': 22, 'carte3': 22, 'joueur': joueur, 'idpartie': idpartie}) }}";
+                }
+                else if (nbCarte == 2) {
+                    var id1 = $(".emplacement1").attr('id');
+                    var url = "{{ path('cadeau', {'carte1': 'id1' , 'carte2': 'id', 'carte3': 22, 'joueur': joueur, 'idpartie': idpartie}) }}";
+                    url = url.replace("id1", id1);
+                }
+                else if (nbCarte == 1) {
+                    var id1 = $(".emplacement1").attr('id');
+                    var id2 = $(".emplacement2").attr('id');
+                    var url = "{{ path('cadeau', {'carte1': 'id1' , 'carte2': 'id2', 'carte3': 'id', 'joueur': joueur, 'idpartie': idpartie}) }}";
+                    url = url.replace("id1", id1);
+                    url = url.replace("id2", id2);
+                }
+                url = url.replace("id", id);
+
+                console.log(url);
+                $("#actions").load(url);
+                $('#' + id).attr('src', '{{ asset('asset/img/pioche.png') }}');
+                nbCarte--;
+            }
+
+
+            if (action == 4 && nbCarte > 0) {
+                if (nbCarte == 4) {
+                    var url = "{{ path('concurrence', {'carte1': 'id', 'carte2': 22, 'carte3': 22, 'carte4': 22, 'joueur': joueur, 'idpartie': idpartie}) }}";
+                }
+                else if (nbCarte == 3) {
+                    var id1 = $(".emplacement1").attr('id');
+                    var url = "{{ path('concurrence', {'carte1': 'id1' , 'carte2': 'id', 'carte3': 22, 'carte4': 22, 'joueur': joueur, 'idpartie': idpartie}) }}";
+                    url = url.replace("id1", id1);
+                }
+                else if (nbCarte == 2) {
+                    var id1 = $(".emplacement1").attr('id');
+                    var id2 = $(".emplacement2").attr('id');
+                    var url = "{{ path('concurrence', {'carte1': 'id1' , 'carte2': 'id2', 'carte3': 'id', 'carte4': 22, 'joueur': joueur, 'idpartie': idpartie}) }}";
+                    url = url.replace("id1", id1);
+                    url = url.replace("id2", id2);
+                }
+                else if (nbCarte == 1) {
+                    var id1 = $(".emplacement1").attr('id');
+                    var id2 = $(".emplacement2").attr('id');
+                    var id3 = $(".emplacement3").attr('id');
+                    var url = "{{ path('concurrence', {'carte1': 'id1' , 'carte2': 'id2', 'carte3': 'id3', 'carte4': 'id', 'joueur': joueur, 'idpartie': idpartie}) }}";
+                    url = url.replace("id1", id1);
+                    url = url.replace("id2", id2);
+                    url = url.replace("id3", id3);
+                }
+                url = url.replace("id", id);
+
+                console.log(url);
+                $("#actions").load(url);
+                $('#' + id).attr('src', '{{ asset('asset/img/pioche.png') }}');
+                nbCarte--;
+            }
+            setInterval(function () {
+
+                $("#actionsa").load("{{ path('cadeau_suite2', {'joueur': joueur,'idpartie': idpartie}) }}");
+
+                $("#actionsa2").load("{{ path('concurrence_suite2', {'joueur': joueur,'idpartie': idpartie}) }}");
+
+                $("#dispo").load("{{ path('afficher_actiondispo', {'idpartie': idpartie, 'joueur': joueur}) }}");
+
+            }, 5000);
+        });
+    });
+</script>

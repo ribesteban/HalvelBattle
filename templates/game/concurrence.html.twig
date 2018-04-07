@@ -1,0 +1,43 @@
+<style>
+    div.action{
+        background-color: rgba(36, 43, 63, 0.9);
+        position: absolute;
+        border-radius: 10px;
+        height: 30vh;
+        padding: 1%;
+        margin-left: 10vw;
+    }
+    div.action p{
+        text-align: center;
+        font-size: 2em;
+        font-family: 'Cinzel', serif;
+    }
+    .emplacement1, .emplacement2, .emplacement3, .emplacement4{
+        width: 7vw;
+        height: 20vh;
+
+        border-radius: 10px;
+        float:left;
+        margin-left: 1%;
+    }
+    .emplacement1{
+        margin-left: 5vw;
+    }
+    .emplacement3{
+        margin-left: 2vw;
+    }
+</style>
+<div class="action col-8">
+    <p>Concurrence</p>
+    <div class="paire1">
+        <div class="emplacement1" id="{{ carte1.Id }}"><img src="{{ asset(carte1.ObjetImg) }}" alt=""></div>
+        <div class="emplacement2" id="{{ carte2.Id }}"><img src="{{ asset(carte2.ObjetImg) }}" alt=""></div>
+    </div>
+    <div class="paire2">
+        <div class="emplacement3" id="{{ carte3.Id }}"><img src="{{ asset(carte3.ObjetImg) }}" alt=""></div>
+        <div class="emplacement4" id="{{ carte4.Id }}"><img src="{{ asset(carte4.ObjetImg) }}" alt=""></div>
+    </div>
+    {% if carte4.Id != 22 %}
+        <a href="{{ path('concurrence_suite', {'carte1': carte1.Id, 'carte2': carte2.Id, 'carte3': carte3.Id, 'carte4': carte4.Id, 'joueur': joueur, 'idpartie': idpartie}) }}"><button>Jouer</button></a>
+    {% endif %}
+</div>

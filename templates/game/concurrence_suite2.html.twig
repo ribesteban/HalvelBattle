@@ -1,0 +1,89 @@
+{% if carte1.Id != 22 %}
+    <style>
+        div.action{
+            background-color: rgba(36, 43, 63, 0.9);
+            position: absolute;
+            border-radius: 10px;
+            height: 30vh;
+            padding: 1%;
+            margin-left: 10vw;
+
+        }
+        div.action p{
+            text-align: center;
+            font-size: 1.6em;
+            font-family: 'Cinzel', serif;
+            margin:1%;
+        }
+        .emplacement1, .emplacement2, .emplacement3, .emplacement4{
+            width: 7vw;
+            height: 20vh;
+            border-radius: 10px;
+            float:left;
+            margin-left: 1%;
+        }
+
+        .paire1{
+            height:20vh;
+            width:16vw;
+            float: left;
+            margin-left: 5vw;
+            cursor: pointer;
+        }
+        .paire2{
+            height:20vh;
+            width:16vw;
+            float: left;
+            margin-left: 3vw;
+            cursor: pointer;
+        }
+        button{
+            margin-left: 5vw;
+            height: 5vh;
+            background-color: #151020;
+            color: white;
+            border: 0px solid;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: -5vh;
+        }
+    </style>
+    <div class="action col-8">
+        <p>Sélectionnez une paire Concurrence</p>
+        <div class="paire1">
+            <div class="emplacement1" id="{{ carte1.Id }}"><img src="{{ asset(carte1.ObjetImg) }}" alt=""></div>
+            <div class="emplacement2" id="{{ carte2.Id }}"><img src="{{ asset(carte2.ObjetImg) }}" alt=""></div>
+        </div>
+        <div class="paire2">
+            <div class="emplacement3" id="{{ carte3.Id }}"><img src="{{ asset(carte3.ObjetImg) }}" alt=""></div>
+            <div class="emplacement4" id="{{ carte4.Id }}"><img src="{{ asset(carte4.ObjetImg) }}" alt=""></div>
+        </div>
+        <a href="" style="display:none;"><button>Jouer</button></a>
+    </div>
+    <script>
+        $(document).ready(function () {
+
+            $('.paire1').click(function () {
+                id1 = $(".emplacement1").attr('id');
+                id2 = $(".emplacement2").attr('id');
+                $("a").show();
+                var url = "{{ path('concurrence_traitement', {'carte1': 'id1', 'carte2': 'id2', 'joueur': joueur, 'idpartie': idpartie}) }}";
+                url = url.replace("id1", id1);
+                url = url.replace("id2", id2);
+                $("a").attr('href', url);
+            });
+            $('.paire2').click(function () {
+                id1 = $(".emplacement3").attr('id');
+                id2 = $(".emplacement4").attr('id');
+
+                $("a").show();
+                var url = "{{ path('concurrence_traitement', {'carte1': 'id1', 'carte2': 'id2', 'joueur': joueur, 'idpartie': idpartie}) }}";
+                url = url.replace("id1", id1);
+                url = url.replace("id2", id2);
+                $("a").attr('href', url);
+            });
+
+        });
+    </script>
+
+{% endif %}

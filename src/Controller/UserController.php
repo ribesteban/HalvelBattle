@@ -90,7 +90,19 @@ class UserController extends Controller
     public function modifier_informations()
     {
         $joueur = $this->getUser();
-        return $this->render('User/modifier.html.twig', ['joueur' => $joueur]);
+
+        $joueurs = $this->getDoctrine()->getRepository("App:User");
+        $joueurs = $joueurs->findAll();
+
+        $limit = $this->getDoctrine()->getRepository("App:Chat");
+        $limit = $limit->findBy(array(), array('id' => 'desc'),1,0);
+        $limit = $limit[0]->getId();
+        $limit = $limit - 5;
+
+        $chat = $this->getDoctrine()->getRepository("App:Chat");
+        $chat = $chat->findBy(array(), array('id' => 'ASC'),5, $limit);
+
+        return $this->render('User/modifier.html.twig', ['joueur' => $joueur, 'joueurs' => $joueurs, 'chat'=> $chat]);
     }
 
     /**

@@ -44,7 +44,7 @@
                 <p>Nombre de parties gagnées : {{ joueur.UserWin }}</p>
                 <p>Nombre de parties perdues : {{ joueur.userJouees - joueur.UserWin }}</p>
                 {% if joueur.userJouees != 0 %}
-                    <p>Ratio : {{ ((joueur.UserWin / joueur.userJouees)|round(1, 'floor'))*100 }}% de victoire</p>
+                    <p>Ratio : {{ ((joueur.UserWin / joueur.userJouees)|round(2, 'floor'))*100 }}% de victoire</p>
                 {% endif %}
             </div>
         </div>
