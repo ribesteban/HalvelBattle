@@ -1,0 +1,14 @@
+{% set who = 0 %}
+    {% for carte in objectifs %}
+        <span style="float:left;">
+            <img src="{{ asset(carte.CarteImg) }}" alt="" style="margin-right: 1vw;">
+            <img class="{{ attribution[who] }}" src="{{ asset("asset/img/jeton/"~carte.Id~".png") }}" alt="" style="
+                    {% if attribution[who] == 0 %}margin-top:5vh;margin-left:-9vw;
+                    {% elseif attribution[who] == 1 and app.user.id == joueur1.Id %}margin-top:11vh;margin-left:-8vw;
+                    {% elseif attribution[who] == 2 and app.user.id == joueur1.Id %}margin-top:-1vh;margin-left:-8vw;
+                    {% elseif attribution[who] == 2 and app.user.id == joueur2.Id %}margin-top:11vh;margin-left:-8vw;
+                    {% elseif attribution[who] == 1 and app.user.id == joueur2.Id %}margin-top:-1vh;margin-left:-8vw;
+                    {% endif %}position:absolute;width:2vw;float:left;">
+        </span>
+        {% set who = who+1 %}
+    {% endfor %}

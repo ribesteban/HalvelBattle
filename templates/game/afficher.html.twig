@@ -19,6 +19,9 @@
 		.actions{
 			cursor: pointer;
 		}
+        img.0{
+            margin-top:5vh !important;
+        }
 		{% endblock %}
 
     {% block bloc1 %}
@@ -26,23 +29,29 @@
 		<div class="col-12" style="float:none;height:10vh;">
             {% if joueur == 'j1' %}
 				<img class="avatars" src="{{ asset(joueur2.UserImage) }}" alt="">
-				<p>{{ joueur2.Username }}<br/>Score : {{ joueur2.UserWin }}</p><br/>
+				<p>{{ joueur2.Username }}<br/>Score : {{ partie.ScoreJ2 }}</p><br/>
             {% elseif joueur == 'j2' %}
 				<img class="avatars" src="{{ asset(joueur1.UserImage) }}" alt="">
-				<p>{{ joueur1.Username }}<br/>Score : {{ joueur1.UserWin }}</p><br/>
+				<p>{{ joueur1.Username }}<br/>Score : {{ partie.ScoreJ1 }}</p><br/>
             {% endif %}
 
 			<p style="float:right;">Manche : {{ partie.manche }}</p>
 		</div>
 
 		<div id="objectifs" class="col-12" style="width:100vw;text-align:center;">
-			{% set who = 0 %}
+            {% set who = 0 %}
             {% for carte in objectifs %}
-				<span style=" float:left;">
-					<img src="{{ asset(carte.CarteImg) }}" alt="">
-					<img class="{{ attribution[who] }}" src="{{ asset("asset/img/jeton/"~carte.Id~".png") }}" alt="" style="width:1vw;float:left;">
-				</span>
-				{% set who = who+1 %}
+                <span style="float:left;">
+            <img src="{{ asset(carte.CarteImg) }}" alt="" style="margin-right: 1vw;">
+            <img class="{{ attribution[who] }}" src="{{ asset("asset/img/jeton/"~carte.Id~".png") }}" alt="" style="
+                    {% if attribution[who] == 0 %}margin-top:5vh;margin-left:-9vw;
+            {% elseif attribution[who] == 1 and app.user.id == joueur1.Id %}margin-top:11vh;margin-left:-8vw;
+                    {% elseif attribution[who] == 2 and app.user.id == joueur1.Id %}margin-top:-1vh;margin-left:-8vw;
+                    {% elseif attribution[who] == 2 and app.user.id == joueur2.Id %}margin-top:11vh;margin-left:-8vw;
+                    {% elseif attribution[who] == 1 and app.user.id == joueur2.Id %}margin-top:-1vh;margin-left:-8vw;
+                    {% endif %}position:absolute;width:2vw;float:left;">
+        </span>
+                {% set who = who+1 %}
             {% endfor %}
 		</div>
 		<div class="col-12" id="actions">
@@ -54,14 +63,19 @@
         <div class="col-12" id="actionsa2">
 
         </div>
+        <div class="col-12" id="fin">
 
-
+        </div>
 		<div class="col-12">
 			<h3>Vos Cartes :</h3>
 		</div>
         <div id="dispo">
             <div style="text-align:center;padding:0;height: 25vh;" class="col-12" id="main">
-                <img style="margin-right: 3vw;" src="{{ asset('asset/img/pioche.png') }}" alt="">
+
+                {% if pioche != 0 %}
+                    <img style="margin-right: 3vw;" src="{{ asset('asset/img/pioche.png') }}" alt="">
+                {% endif %}
+                <span style="width:6vw;">&nbsp;</span>
                 {% for carte in main %}
                     <img class="objet" id="{{ carte.id }}" src="{{ asset(carte.img) }}" alt="">
                 {% endfor %}
@@ -70,10 +84,10 @@
             <div class="col-12">
                 {% if joueur == 'j2' %}
                     <img class="avatars" src="{{ asset(joueur2.UserImage) }}" alt="">
-                    <p>{{ joueur2.Username }}<br/>Score : {{ joueur2.UserWin }}</p></p><br/>
+                    <p>{{ joueur2.Username }}<br/>Score : {{partie.ScoreJ2 }}</p></p><br/>
                 {% elseif joueur == 'j1' %}
                     <img class="avatars" src="{{ asset(joueur1.UserImage) }}" alt="">
-                    <p>{{ joueur1.Username }}<br/>Score : {{ joueur1.UserWin }}</p></p><br/>
+                    <p>{{ joueur1.Username }}<br/>Score : {{ partie.ScoreJ1 }}</p></p><br/>
                 {% endif %}
 
                 {% for action in action_dispo %}
@@ -94,24 +108,28 @@
                 if(action == 0){
                     $('.disparition').click(function() {
                         clearInterval(test);
+                        clearInterval(test2);
                         $("#actions").load("{{ path('disparition', {'carte1': 22, 'joueur': joueur, 'idpartie': idpartie}) }}");
                         action = 1;
                         nbCarte= 1;
                     });
                     $('.dissimulation').click(function() {
                         clearInterval(test);
+                        clearInterval(test2);
                         $("#actions").load("{{ path('dissimulation', {'carte1': 22, 'carte2': 22, 'joueur': joueur, 'idpartie': idpartie}) }}");
                         action= 2;
                         nbCarte= 2;
                     });
                     $('.cadeau').click(function() {
                         clearInterval(test);
+                        clearInterval(test2);
                         $("#actions").load("{{ path('cadeau', {'carte1': 22, 'carte2': 22, 'carte3': 22, 'joueur': joueur, 'idpartie': idpartie}) }}");
                         action= 3;
                         nbCarte= 3;
                     });
                     $('.concurrence').click(function() {
                         clearInterval(test);
+                        clearInterval(test2);
                         $("#actions").load("{{ path('concurrence', {'carte1': 22, 'carte2': 22, 'carte3': 22, 'carte4': 22, 'joueur': joueur, 'idpartie': idpartie}) }}");
                         action= 4;
                         nbCarte= 4;
@@ -211,14 +229,20 @@
                     }
                 });
                 var test = setInterval(function () {
-                    {% if cadeauJ1 != 1 and cadeauJ2 != 1 %}
+                    $("#dispo").load("{{ path('afficher_actiondispo', {'idpartie': idpartie, 'joueur': joueur}) }}");
+                    $("#objectifs").load("{{ path('objectifs', {'idpartie': idpartie}) }}");
+                }, 20000);
+                var test2 = setInterval(function(){
+                    {% if cadeauJ1 != 1 or cadeauJ2 != 1 %}
                     $("#actionsa").load("{{ path('cadeau_suite2', {'joueur': joueur,'idpartie': idpartie}) }}");
                     {% endif %}
-                    {% if concurrenceJ1 != 1 and concurrenceJ2 != 1 %}
+                    {% if concurrenceJ1 != 1 or concurrenceJ2 != 1 %}
                     $("#actionsa2").load("{{ path('concurrence_suite2', {'joueur': joueur,'idpartie': idpartie}) }}");
                     {% endif %}
-                    $("#dispo").load("{{ path('afficher_actiondispo', {'idpartie': idpartie, 'joueur': joueur}) }}");
-                }, 10000);
+                    {% if concurrenceJ1 == 1 and concurrenceJ2 == 1 and cadeauJ1== 1 and cadeauJ2 == 1 %}
+                    $("#fin").load("{{ path('finpartie', {'idpartie': idpartie}) }}");
+                    {% endif %}
+                }, 11000);
             });
 		</script>
 

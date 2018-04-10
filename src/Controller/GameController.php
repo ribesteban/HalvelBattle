@@ -35,7 +35,7 @@ class GameController extends Controller
         $idAdversaire = $request->request->get('adversaire');
         $joueur = $this->getDoctrine()->getRepository(User::class)->find($id);
         $adversaire = $this->getDoctrine()->getRepository(User::class)->find($idAdversaire);
-        $nom= $request->request->get('nom_partie');
+
         //récupérer les cartes depuis la base de données et mélanger leur id
         $cartes = $this->getDoctrine()->getRepository(Objet::class)->findBy(array(), ['id' => 'ASC'], 21);
         $carteplus = $this->getDoctrine()->getRepository(Objet::class)->findBy(array(), ['id' => 'DESC'], 1);
@@ -85,6 +85,7 @@ class GameController extends Controller
         $partie->setObjectifAttribution(json_encode($tObjectifs_attribution));
         $partie->setScoreJ1(0);
         $partie->setScoreJ2(0);
+        $partie->setVainqueur(0);
         //Sauvegarde mon objet Partie dans la base de données et redirection vers l'affichage
         $em = $this->getDoctrine()->getManager();
         $em->persist($partie);
@@ -181,6 +182,10 @@ class GameController extends Controller
         $cadeauJ2 = $actionJ2->cadeau;
         $cadeauJ2 = $cadeauJ2->etat;
 
+        //recuperation longueur pioche
+        $lenght = $partie->getPioche();
+        $lenght = count($lenght);
+
 
 
 
@@ -200,9 +205,28 @@ class GameController extends Controller
                 'concurrenceJ2'=>$concurrenceJ2,
                 'cadeauJ1'=>$cadeauJ1,
                 'cadeauJ2'=>$cadeauJ2,
-                'joueur'=>$joueur
+                'joueur'=>$joueur,
+                'pioche'=>$lenght
             ]
         );
+    }
+
+    /**
+     * @Route("/objectifs/{idpartie}", name="objectifs")
+     */
+    public function objectifs($idpartie){
+        $entityManager = $this->getDoctrine()->getManager();
+        $partie = $entityManager->getRepository("App:Partie")->find($idpartie);
+        //récupération des cartes objectifs et de leurs attributions
+        $objectifs = $this->getDoctrine()->getRepository(Objectifs::class)->findAll();
+        $attribution = $partie->getObjectifAttribution();
+
+        return $this->render("game/objectifs.html.twig",
+            [
+                'joueur1' => $partie->getJ1(),
+                'joueur2' => $partie->getJ2(),
+                'objectifs'=>$objectifs,
+                'attribution'=>$attribution]);
     }
 
     /**
@@ -246,6 +270,321 @@ class GameController extends Controller
                 $cartes_main[] = ['nom'=>$carte->getNom(), 'id'=>$id, 'valeur'=>$carte->getValeur(), 'img'=>$carte->getObjetImg()];
             }
         }
-        return $this->render("game/actiondispo.html.twig", ['action_dispo' => $tActionDispo, 'joueur1' => $partie->getJ1(), 'joueur2' => $partie->getJ2(),'joueur'=>$joueur, 'idpartie'=>$idpartie, 'main' => $cartes_main]);
+
+        //récupération etat action concurrence et cadeau
+        $actionJ1 = $partie->getActionJ1();
+        $concurrenceJ1 = $actionJ1->concurrence;
+        $concurrenceJ1 = $concurrenceJ1->etat;
+        $cadeauJ1 = $actionJ1->cadeau;
+        $cadeauJ1 = $cadeauJ1->etat;
+
+        $actionJ2 = $partie->getActionJ2();
+        $concurrenceJ2 = $actionJ2->concurrence;
+        $concurrenceJ2 = $concurrenceJ2->etat;
+        $cadeauJ2 = $actionJ2->cadeau;
+        $cadeauJ2 = $cadeauJ2->etat;
+
+
+        //recuperation longueur pioche
+        $lenght = $partie->getPioche();
+        $lenght = count($lenght);
+
+
+        return $this->render("game/actiondispo.html.twig",
+            [
+                'partie'=>$partie,
+                'action_dispo' => $tActionDispo,
+                'joueur1' => $partie->getJ1(),
+                'joueur2' => $partie->getJ2(),
+                'joueur'=>$joueur,
+                'idpartie'=>$idpartie,
+                'main' => $cartes_main,
+                'concurrenceJ1'=>$concurrenceJ1,
+                'concurrenceJ2'=>$concurrenceJ2,
+                'cadeauJ1'=>$cadeauJ1,
+                'cadeauJ2'=>$cadeauJ2,
+                'pioche'=>$lenght]);
+    }
+
+    /**
+     * @Route("/finpartie/{idpartie}", name="finpartie")
+     */
+    public function finpartie($idpartie){
+        $entityManager = $this->getDoctrine()->getManager();
+        $partie = $entityManager->getRepository("App:Partie")->find($idpartie);
+
+        $mainJ1 = $partie->getMainJ1();
+        $mainJ2 = $partie->getMainJ2();
+        $pioche = $partie->getPioche();
+
+        $mainJ1 = count($mainJ1);
+        $mainJ2 = count($mainJ2);
+        $pioche = count($pioche);
+
+        if($mainJ1==0 && $mainJ2==0 && $pioche==0){
+            $actionJ1 = $partie->getActionJ1();
+            $cartesJ1 = array();
+            $disparitionJ1 = $actionJ1->disparition;
+            $concurrenceJ1 = $actionJ1->concurrence;
+            $cadeauJ1 = $actionJ1->cadeau;
+            $concurrenceAJ1 = $actionJ1->concurrenceA;
+            $cadeauAJ1 = $actionJ1->cadeauA;
+
+            $cartesJ1[] = $disparitionJ1->carte;
+            $cartesJ1[] = $concurrenceJ1->carte[0];
+            $cartesJ1[] = $concurrenceJ1->carte[1];
+            $cartesJ1[] = $cadeauJ1->carte[0];
+            $cartesJ1[] = $cadeauJ1->carte[1];
+            $cartesJ1[] = $concurrenceAJ1->carte[0];
+            $cartesJ1[] = $concurrenceAJ1->carte[1];
+            $cartesJ1[] = $cadeauAJ1->carte;
+            $pointJ1 = array();
+            $point1J1 = $entityManager->getRepository("App:Objet")->find($cartesJ1[0]);
+            $pointJ1[] = $point1J1->getValeur();
+            $point1J1 = $entityManager->getRepository("App:Objet")->find($cartesJ1[1]);
+            $pointJ1[] = $point1J1->getValeur();
+            $point1J1 = $entityManager->getRepository("App:Objet")->find($cartesJ1[2]);
+            $pointJ1[] = $point1J1->getValeur();
+            $point1J1 = $entityManager->getRepository("App:Objet")->find($cartesJ1[3]);
+            $pointJ1[] = $point1J1->getValeur();
+            $point1J1 = $entityManager->getRepository("App:Objet")->find($cartesJ1[4]);
+            $pointJ1[] = $point1J1->getValeur();
+            $point1J1 = $entityManager->getRepository("App:Objet")->find($cartesJ1[5]);
+            $pointJ1[] = $point1J1->getValeur();
+            $point1J1 = $entityManager->getRepository("App:Objet")->find($cartesJ1[6]);
+            $pointJ1[] = $point1J1->getValeur();
+            $point1J1 = $entityManager->getRepository("App:Objet")->find($cartesJ1[7]);
+            $pointJ1[] = $point1J1->getValeur();
+
+            $actionJ2 = $partie->getActionJ2();
+            $cartesJ2 = array();
+            $disparitionJ2 = $actionJ2->disparition;
+            $concurrenceJ2 = $actionJ2->concurrence;
+            $cadeauJ2 = $actionJ2->cadeau;
+            $concurrenceAJ2 = $actionJ2->concurrenceA;
+            $cadeauAJ2 = $actionJ2->cadeauA;
+
+            $cartesJ2[] = $disparitionJ2->carte;
+            $cartesJ2[] = $concurrenceJ2->carte[0];
+            $cartesJ2[] = $concurrenceJ2->carte[1];
+            $cartesJ2[] = $cadeauJ2->carte[0];
+            $cartesJ2[] = $cadeauJ2->carte[1];
+            $cartesJ2[] = $concurrenceAJ2->carte[0];
+            $cartesJ2[] = $concurrenceAJ2->carte[1];
+            $cartesJ2[] = $cadeauAJ2->carte;
+            $pointJ2 = array();
+            $point1J2 = $entityManager->getRepository("App:Objet")->find($cartesJ2[0]);
+            $pointJ2[] = $point1J2->getValeur();
+            $point1J2 = $entityManager->getRepository("App:Objet")->find($cartesJ2[1]);
+            $pointJ2[] = $point1J2->getValeur();
+            $point1J2 = $entityManager->getRepository("App:Objet")->find($cartesJ2[2]);
+            $pointJ2[] = $point1J2->getValeur();
+            $point1J2 = $entityManager->getRepository("App:Objet")->find($cartesJ2[3]);
+            $pointJ2[] = $point1J2->getValeur();
+            $point1J2 = $entityManager->getRepository("App:Objet")->find($cartesJ2[4]);
+            $pointJ2[] = $point1J2->getValeur();
+            $point1J2 = $entityManager->getRepository("App:Objet")->find($cartesJ2[5]);
+            $pointJ2[] = $point1J2->getValeur();
+            $point1J2 = $entityManager->getRepository("App:Objet")->find($cartesJ2[6]);
+            $pointJ2[] = $point1J2->getValeur();
+            $point1J2 = $entityManager->getRepository("App:Objet")->find($cartesJ2[7]);
+            $pointJ2[] = $point1J2->getValeur();
+
+
+            $objectifJ1 = [0,0,0,0,0,0,0];
+            $objectifJ2 = [0,0,0,0,0,0,0];
+            $attribution = [0,0,0,0,0,0,0];
+
+            for($j=0;$j<7;$j++){
+                for($i=0;$i<8;$i++){
+                    if($pointJ1[$i] == $j+1){
+                        $objectifJ1[$j]++;
+                    }
+                }
+            }
+            for($j=0;$j<7;$j++){
+                for($i=0;$i<8;$i++){
+                    if($pointJ2[$i] == $j+1){
+                        $objectifJ2[$j]++;
+                    }
+                }
+            }
+            $creatureJ1=0;
+            $creatureJ2=0;
+            for($k=0;$k<7;$k++){
+                if($objectifJ1[$k] > $objectifJ2[$k]){
+                    $creatureJ1++;
+                    $attribution[$k] = 1;
+                }
+                elseif($objectifJ1[$k] < $objectifJ2[$k]){
+                    $attribution[$k] = 2;
+                    $creatureJ2++;
+                }
+                elseif($objectifJ1[$k] == $objectifJ2[$k]){
+                    $attribution[$k] = 0;
+                }
+            }
+            $partie->setObjectifAttribution(json_encode($attribution));
+
+            $scoreJ1 =0;
+            if ($attribution[0]==1){
+                $scoreJ1+=2;
+            }
+            if ($attribution[1]==1){
+                $scoreJ1+=2;
+            }
+            if ($attribution[2]==1){
+                $scoreJ1+=2;
+            }
+            if ($attribution[3]==1){
+                $scoreJ1+=3;
+            }
+            if ($attribution[4]==1){
+                $scoreJ1+=3;
+            }
+            if ($attribution[5]==1){
+                $scoreJ1+=4;
+            }
+            if ($attribution[6]==1){
+                $scoreJ1+=5;
+            }
+
+            $scoreJ2 =0;
+            if ($attribution[0]==2){
+                $scoreJ2+=2;
+            }
+            if ($attribution[1]==2){
+                $scoreJ2+=2;
+            }
+            if ($attribution[2]==2){
+                $scoreJ2+=2;
+            }
+            if ($attribution[3]==2){
+                $scoreJ2+=3;
+            }
+            if ($attribution[4]==2){
+                $scoreJ2+=3;
+            }
+            if ($attribution[5]==2){
+                $scoreJ2+=4;
+            }
+            if ($attribution[6]==2){
+                $scoreJ2+=5;
+            }
+
+            $vainqueur = 0;
+            if($creatureJ1>=4 || $scoreJ1>=11){
+                $vainqueur=1;
+            }
+            elseif($creatureJ2>=4 || $scoreJ2>=11){
+                $vainqueur=2;
+            }
+            else{
+                $vainqueur = 0;
+            }
+
+            $partie->setVainqueur($vainqueur);
+            $partie->setScoreJ1($scoreJ1);
+            $partie->setScoreJ2($scoreJ2);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($partie);
+            $em->flush();
+        }
+        else{
+            $vainqueur = 0;
+        }
+
+        return $this->render("game/finpartie.html.twig",
+            [
+                'idpartie'=>$idpartie,
+                'joueur1' => $partie->getJ1(),
+                'joueur2' => $partie->getJ2(),
+                'vainqueur'=>$vainqueur,
+                'mainJ1'=>$mainJ1,
+                'mainJ2'=>$mainJ2,
+                'pioche'=>$pioche]);
+    }
+
+    /**
+     * @Route("/manche_suivante/{idpartie}", name="manche_suivante")
+     */
+    public function manche_suivante($idpartie){
+        $entityManager = $this->getDoctrine()->getManager();
+        $partie = $entityManager->getRepository("App:Partie")->find($idpartie);
+        //manche
+        $manche = $partie->getManche();
+        $manche++;
+        //récupérer les cartes depuis la base de données et mélanger leur id
+        $cartes = $this->getDoctrine()->getRepository(Objet::class)->findBy(array(), ['id' => 'ASC'], 21);
+        $carteplus = $this->getDoctrine()->getRepository(Objet::class)->findBy(array(), ['id' => 'DESC'], 1);
+        $tCartes = array();
+        foreach ($cartes as $carte) {
+            $tCartes[] = $carte->getId();
+        }
+        shuffle($tCartes);
+        //retrait de la première carte
+        $carte_ecartee = array_pop($tCartes);
+        //Distribution des cartes aux joueurs,
+        $tMainJ1 = array();
+        for($i=0; $i<7; $i++) {
+            $tMainJ1[] = array_pop($tCartes);
+        }
+        $tMainJ2 = array();
+        for($i=0; $i<6; $i++) {
+            $tMainJ2[] = array_pop($tCartes);
+        }
+        $tMainJ1[] = 22;
+        $tMainJ2[] = 22;
+        //La création de la pioche ,sauvegarde des dernières cartes dans la pioche
+        $tPioche = $tCartes;
+        // actions au départ
+        $dissimulation = array('etat'=>0, 'carte'=>0);
+        $disparition = array('etat'=>0, 'carte'=>array());
+        $cadeau = array('etat'=>0, 'carte'=>array());
+        $cadeauA = array('etat'=>1, 'carte'=>0);
+        $concurrence = array('etat'=>0, 'carte'=>array());
+        $concurrenceA = array('etat'=>1, 'carte'=>array());// A revoir
+        // tableau de toutes les actions
+        $tAction = array("dissimulation"=>$dissimulation, "disparition"=>$disparition, "cadeau"=>$cadeau, "cadeauA"=>$cadeauA, "concurrence"=>$concurrence, "concurrenceA"=>$concurrenceA);
+        // attribution des objectif par id à j1 et j2
+
+        //créer un objet de type Partie
+
+        $partie->setCarteEcartee(json_encode($carte_ecartee));
+        $partie->setMainJ1(json_encode($tMainJ1));
+        $partie->setMainJ2(json_encode($tMainJ2));
+        $partie->setPioche(json_encode($tPioche));
+        $partie->setTour('j1');
+        $partie->setManche($manche);
+        $partie->setActionJ1(json_encode($tAction));
+        $partie->setActionJ2(json_encode($tAction));
+
+        //Sauvegarde mon objet Partie dans la base de données et redirection vers l'affichage
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($partie);
+        $em->flush();
+        //Je recupère les mains :
+        $entityManager = $this->getDoctrine()->getManager();
+        $partie = $entityManager->getRepository("App:Partie")->find($partie->getId());
+
+        $mainJ1 = $partie->getMainJ1();
+        foreach ($mainJ1 as  $key=>$value) {
+            if($value == 22){
+                unset($mainJ1[$key]);
+            }
+        }
+        $mainJ2 = $partie->getMainJ2();
+        foreach ($mainJ2 as  $key=>$value) {
+            if($value == 22){
+                unset($mainJ2[$key]);
+            }
+        }
+        $partie->setMainJ1(json_encode($mainJ1));
+        $partie->setMainJ2(json_encode($mainJ2));
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($partie);
+        $em->flush();
+        return $this->redirectToRoute('afficher_partie', ['id' => $partie->getId(), 'partie'=>$partie]);
     }
 }

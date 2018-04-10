@@ -1,0 +1,30 @@
+<style>
+    div.action{
+        background-color: rgba(36, 43, 63, 1);
+        position: absolute;
+        border-radius: 10px;
+        height: 30vh;
+        padding: 1%;
+        margin-left: 10vw;
+        margin-top: 25vh;
+        z-index: 5;
+    }
+    div.action p{
+        text-align: center;
+        font-size: 2em;
+        font-family: 'Cinzel', serif;
+    }
+</style>
+{% if pioche == 0 and mainJ1 == 0 and mainJ2 == 0 %}
+<div class="action col-8">
+    <p>Fin partie</p>
+    {% if vainqueur == 0 %}
+        <p style="font-size:1.2em;">Il n'y a pas de vainqueur, il faut désormais passer à la manche suivante..</p>
+        <a href="{{ path('manche_suivante', {'idpartie': idpartie}) }}">Manche Suivante</a>
+        {% elseif vainqueur == 1 %}
+            <p>Le joueur 1 l'emporte</p>
+            {% elseif vainqueur == 2 %}
+                <p>Le joueur 2 l'emporte</p>
+                {% endif %}
+</div>
+{% endif %}

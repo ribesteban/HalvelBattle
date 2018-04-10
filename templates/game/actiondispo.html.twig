@@ -1,5 +1,7 @@
 <div style="text-align:center;padding:0;height: 25vh;" class="col-12" id="main">
-    <img style="margin-right: 3vw;" src="{{ asset('asset/img/pioche.png') }}" alt="">
+    {% if pioche != 0 %}
+        <img style="margin-right: 3vw;" src="{{ asset('asset/img/pioche.png') }}" alt="">
+    {% endif %}
     {% for carte in main %}
         <img class="objet" id="{{ carte.id }}" src="{{ asset(carte.img) }}" alt="">
     {% endfor %}
@@ -8,10 +10,10 @@
 <div class="col-12">
     {% if joueur == 'j2' %}
         <img class="avatars" src="{{ asset(joueur2.UserImage) }}" alt="">
-        <p>{{ joueur2.Username }}<br/>Score : {{ joueur2.UserWin }}</p></p><br/>
+        <p>{{ joueur2.Username }}<br/>Score : {{ partie.ScoreJ2 }}</p></p><br/>
     {% elseif joueur == 'j1' %}
         <img class="avatars" src="{{ asset(joueur1.UserImage) }}" alt="">
-        <p>{{ joueur1.Username }}<br/>Score : {{ joueur1.UserWin }}</p></p><br/>
+        <p>{{ joueur1.Username }}<br/>Score : {{ partie.ScoreJ1 }}</p></p><br/>
     {% endif %}
 
     {% if concurrenceJ1 == 2 or concurrenceJ2 == 2 %}
@@ -151,15 +153,6 @@
                 $('#' + id).attr('src', '{{ asset('asset/img/pioche.png') }}');
                 nbCarte--;
             }
-            setInterval(function () {
-
-                $("#actionsa").load("{{ path('cadeau_suite2', {'joueur': joueur,'idpartie': idpartie}) }}");
-
-                $("#actionsa2").load("{{ path('concurrence_suite2', {'joueur': joueur,'idpartie': idpartie}) }}");
-
-                $("#dispo").load("{{ path('afficher_actiondispo', {'idpartie': idpartie, 'joueur': joueur}) }}");
-
-            }, 5000);
         });
     });
 </script>

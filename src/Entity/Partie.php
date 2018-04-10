@@ -75,6 +75,12 @@ class Partie
      * @ORM\Column(type="text")
      */
     private $action_j2;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $vainqueur;
+
     /**
      * @return mixed
      */
@@ -265,4 +271,21 @@ class Partie
     {
         $this->carte_ecartee = $carte_ecartee;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getVainqueur()
+    {
+        return $this->vainqueur;
+    }
+
+    /**
+     * @param mixed $vainqueur
+     */
+    public function setVainqueur($vainqueur): void
+    {
+        $this->vainqueur = $vainqueur;
+    }
+
 }
