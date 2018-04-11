@@ -23,7 +23,7 @@ class UserRepository extends ServiceEntityRepository
     public function findByUsername($value)
     {
         return $this->createQueryBuilder('u')
-            ->where('u.username LIKE %:value%')->setParameter('value', $value)
+            ->where('u.username LIKE :value')->setParameter('value', '%'.$value.'%')
             ->orderBy('u.id', 'ASC')
             ->setMaxResults(4)
             ->getQuery()

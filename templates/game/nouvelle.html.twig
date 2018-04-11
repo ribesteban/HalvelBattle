@@ -1,18 +1,178 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Nouvelle partie
+{% endblock %}
+
+{% block style %}
+    .bloc1{
+        background-image: url({{ asset('img/fond.jpg') }});
+    }
+    #demarrer{
+        background-color: #151020;
+        color: white;
+        width: 20vw;
+        float:left;
+        height:20vh;
+        border-radius: 10px 0 0 10px;
+        padding-top: 8vh;
+        margin-left: 30vw;
+        cursor: pointer;
+    }
+    #rejoindre, #rechercher{
+        background-color: #151020;
+        color: white;
+        width: 20vw;
+        float:left;
+        height:20vh;
+        border-radius: 0 10px 10px 0;
+        padding-top: 8vh;
+        cursor: pointer;
+    }
+    #demarrer p, #rejoindre p, #rechercher p{
+        margin:1%;
+        text-align: center;
+        font-family : Cinzel;
+        font-size: 1.8em;
+    }
+    #demarrerimg{
+        float: left;
+        height: 20vh;
+    }
+    #rejoindreimg, #rechercherimg{
+        height:20vh;
+        float: left;
+        margin-left: 30vw;
+    }
+    #selecta{
+        display:none;
+    }
+    select{
+        background-color:#303851;
+        color:white;
+        border-radius: 10px 0 0 10px;
+        padding: 1%;
+        border: 0px solid;
+    }
+    input{
+        background-color:#303851;
+        color:white;
+        border-radius: 0 10px 10px 0;
+        padding: 2%;
+        border: 0px solid;
+    }
+    #searchbarre{
+        display:none;
+    }
+    #inputsearch{
+        margin-left: 1vw;
+        height: 5vh;
+        text-align: left;
+        margin-bottom: 1vh;
+        float: left;
+        background-color: #303851;
+        color: white;
+        border: 0 solid;
+        border-radius: 10px 0px 0px 10px;
+        padding-left: 10px;
+    }
+    #submitsearch{
+        height: 5vh;
+        margin-bottom: 1vh;
+        float:left;
+        width: 6vw;
+        background-color: #303851;
+        color: white;
+        border: 0px solid;
+        border-radius: 0px 10px 10px 0px;
+    }
+    #resultat{
+        background-color: #151020;
+        border-radius: 0 0 10px 10px;
+    }
+    #resultat p{
+        font-size: 1em;
+    margin-bottom: 2vh;
+    }
+    #resultat img{
+        margin: 1%;
+        float:left;
+    }
+    #resultat a.defie{
+        font-size:1.2em;
+        background-color: #303851;
+        border-radius: 10px;
+        padding:1%;
+        margin-top: 3vh;
+    }
+{% endblock %}
+
 {% block bloc1 %}
-    <form method="post" action="{{ path('creer_partie') }}">
-        <div>
-            Choisissez l'adversaire :
-            <select name="adversaire">
-                <option value=""> Choisir</option>
-                {% for user in joueurs %}
-                    <option value="{{ user.id }}">{{ user.username }}</option>
-                {% endfor %}
-            </select>
+    <div class="col-12" id="divrejoindre" style="float:none;height:25vh;">
+        <img id="rejoindreimg" src="{{ asset('img/continuer.png') }}" alt="">
+        <div id="rejoindre">
+            <p id="clic2">Rejoindre une partie</p>
         </div>
-        <div>
-            <input type="submit" value="Créer la partie">
+    </div>
+    <div id="proposition"></div>
+
+        <div class="col-12" id="divdemarrer" style="height:25vh;">
+            <div id="demarrer">
+                <p id="clic1">Démarrer une partie</p>
+                <form id="selecta" method="post" action="{{ path('creer_partie') }}">
+                    <p style="margin-top:-5vh;">Choisissez l'adversaire :</p><br/>
+                    <select name="adversaire">
+                        <option value=""> Choisir</option>
+                        {% for user in joueurs %}
+                            {% if app.user.id != user.Id %}
+                                <option value="{{ user.id }}">{{ user.username }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    <input type="submit" value="Créer la partie">
+                </form>
+            </div>
+            <img id="demarrerimg" src="{{ asset('img/demarrer.png') }}" alt="">
         </div>
-    </form>
+
+
+    <div class="col-12" id="divrechercher" style="height:25vh;">
+        <img id="rechercherimg" src="{{ asset('img/rechercher.png') }}" alt="">
+        <div id="rechercher">
+            <p id="clic3">Rechercher un joueur</p>
+            <div id="searchbarre"><p style="margin-top:-5vh;">Rechercher un joueur</p><input id="inputsearch" type="text" placeholder="Pseudo joueur..."><button id="submitsearch">Rechercher</button></div>
+            <div id="resultat"> </div>
+        </div>
+    </div>
+    <div id="resultat"></div>
+    <script>
+        $(document).ready(function () {
+            $('#demarrer').click(function () {
+                $('#clic1').hide(500);
+                $('#selecta').show(500);
+            });
+            $('#rejoindre').click(function () {
+                $('#divdemarrer').hide(500);
+                $('#divrechercher').hide(500);
+                $('#proposition').load("{{ path('chercher_parties', {'idjoueur': app.user.id}) }}");
+            });
+            $('#rechercher').click(function () {
+                $('#divdemarrer').hide(500);
+                $('#divrejoindre').hide(500);
+                $('#clic3').hide(500);
+                $('#searchbarre').show(500);
+            });
+            $('#submitsearch').click(function (){
+                if($('#inputsearch').val() != ''){
+                    var url = "{{ path('rechercher_joueur', {'username': 'text' }) }}";
+                    var username = $('#inputsearch').val();
+                    console.log(username);
+                    url = url.replace("text", username);
+                    console.log(url);
+                    $('#resultat').load(url);
+                }
+            });
+        });
+    </script>
+
 {% endblock %}

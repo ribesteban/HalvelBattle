@@ -40,4 +40,14 @@ class PartieRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findPartiesProposition($joueur)
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.j2 = :val')
+            ->andWhere('p.vainqueur = 0')
+            ->setParameter('val', $joueur)
+            ->getQuery()
+            ->getResult();
+    }
 }

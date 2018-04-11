@@ -1,0 +1,27 @@
+<style>
+    .parties{
+        background-color: #151020;
+        color:white;
+        border-radius: 10px;
+        width:50vw;
+        margin-left:25vw;
+        margin-bottom: 3vh;
+        padding:0.5%;
+        height: 5vh;
+    }
+    .parties p{
+        font-family: Cinzel;
+        font-size: 1.4em;
+        float:left;
+    }
+    #lien{
+        float:right;
+    }
+</style>
+{% for partie in parties %}
+    <div class="parties">
+        <p>Partie contre : {{ partie.J1.Username }}</p>
+        <a id="lien" href="{{ path('afficher_partie', {'id': partie.Id}) }}"><p>Rejoindre</p></a>
+    </div>
+
+{% endfor %}

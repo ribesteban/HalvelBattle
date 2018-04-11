@@ -23,6 +23,16 @@ class GameController extends Controller
         $joueurs = $this->getDoctrine()->getRepository(User::class)->findAll();
         return $this->render('game/nouvelle.html.twig', ['joueurs' => $joueurs]);
     }
+
+    /**
+     * @Route("/partie/chercher_parties/{idjoueur}", name="chercher_parties")
+     */
+    public function chercherPartie($idjoueur)
+    {
+        $partiesjoueurs=$this->getDoctrine()->getRepository("App:Partie")->findPartiesProposition($idjoueur);
+        return $this->render('game/chercher_parties.html.twig', ['parties' => $partiesjoueurs]);
+    }
+
     /**
      * @Route("/partie/creer", name="creer_partie")
      */
@@ -115,8 +125,103 @@ class GameController extends Controller
         $em->flush();
         return $this->redirectToRoute('afficher_partie', ['id' => $partie->getId(), 'partie'=>$partie]);
     }
+
     /**
-     * @Route("partie/afficher/{id}", name="afficher_partie")
+     * @Route("/partie/creer2/{idadversaire}", name="creer2_partie")
+     */
+    public function creer2Partie($idadversaire) {
+        $user = $this->getUser();
+        if($user) {
+            $id = $user->getId();
+        } else {
+            $id = "Pas d'Id";
+        }
+
+        $joueur = $this->getDoctrine()->getRepository(User::class)->find($id);
+        $adversaire = $this->getDoctrine()->getRepository(User::class)->find($idadversaire);
+
+        //récupérer les cartes depuis la base de données et mélanger leur id
+        $cartes = $this->getDoctrine()->getRepository(Objet::class)->findBy(array(), ['id' => 'ASC'], 21);
+        $carteplus = $this->getDoctrine()->getRepository(Objet::class)->findBy(array(), ['id' => 'DESC'], 1);
+        $tCartes = array();
+        foreach ($cartes as $carte) {
+            $tCartes[] = $carte->getId();
+        }
+        shuffle($tCartes);
+        //retrait de la première carte
+        $carte_ecartee = array_pop($tCartes);
+        //Distribution des cartes aux joueurs,
+        $tMainJ1 = array();
+        for($i=0; $i<7; $i++) {
+            $tMainJ1[] = array_pop($tCartes);
+        }
+        $tMainJ2 = array();
+        for($i=0; $i<6; $i++) {
+            $tMainJ2[] = array_pop($tCartes);
+        }
+        $tMainJ1[] = 22;
+        $tMainJ2[] = 22;
+        //La création de la pioche ,sauvegarde des dernières cartes dans la pioche
+        $tPioche = $tCartes;
+        // actions au départ
+        $dissimulation = array('etat'=>0, 'carte'=>0);
+        $disparition = array('etat'=>0, 'carte'=>array());
+        $cadeau = array('etat'=>0, 'carte'=>array());
+        $cadeauA = array('etat'=>1, 'carte'=>0);
+        $concurrence = array('etat'=>0, 'carte'=>array());
+        $concurrenceA = array('etat'=>1, 'carte'=>array());// A revoir
+        // tableau de toutes les actions
+        $tAction = array("dissimulation"=>$dissimulation, "disparition"=>$disparition, "cadeau"=>$cadeau, "cadeauA"=>$cadeauA, "concurrence"=>$concurrence, "concurrenceA"=>$concurrenceA);
+        // attribution des objectif par id à j1 et j2
+        $tObjectifs_attribution = array(0,0,0,0,0,0,0);
+        //créer un objet de type Partie
+        $partie = new Partie();
+        $partie->setJ1($joueur);
+        $partie->setJ2($adversaire);
+        $partie->setCarteEcartee(json_encode($carte_ecartee));
+        $partie->setMainJ1(json_encode($tMainJ1));
+        $partie->setMainJ2(json_encode($tMainJ2));
+        $partie->setPioche(json_encode($tPioche));
+        $partie->setTour('j1');
+        $partie->setManche(1);
+        $partie->setActionJ1(json_encode($tAction));
+        $partie->setActionJ2(json_encode($tAction));
+        $partie->setObjectifAttribution(json_encode($tObjectifs_attribution));
+        $partie->setScoreJ1(0);
+        $partie->setScoreJ2(0);
+        $partie->setVainqueur(0);
+        //Sauvegarde mon objet Partie dans la base de données et redirection vers l'affichage
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($partie);
+        $em->flush();
+        //Je recupère les mains :
+        $entityManager = $this->getDoctrine()->getManager();
+        $partie = $entityManager->getRepository("App:Partie")->find($partie->getId());
+
+        $mainJ1 = $partie->getMainJ1();
+        foreach ($mainJ1 as  $key=>$value) {
+            if($value == 22){
+                unset($mainJ1[$key]);
+            }
+        }
+        $mainJ2 = $partie->getMainJ2();
+        foreach ($mainJ2 as  $key=>$value) {
+            if($value == 22){
+                unset($mainJ2[$key]);
+            }
+        }
+        $partie->setMainJ1(json_encode($mainJ1));
+        $partie->setMainJ2(json_encode($mainJ2));
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($partie);
+        $em->flush();
+        return $this->redirectToRoute('afficher_partie', ['id' => $partie->getId(), 'partie'=>$partie]);
+    }
+
+
+
+    /**
+     * @Route("/partie/afficher/{id}", name="afficher_partie")
      */
     public function afficherPartie(Partie $partie) {
         //récupération du joueur à partir de la session
@@ -413,6 +518,8 @@ class GameController extends Controller
             }
             $creatureJ1=0;
             $creatureJ2=0;
+            $attributionActuelle = $partie->getObjectifAttribution();
+
             for($k=0;$k<7;$k++){
                 if($objectifJ1[$k] > $objectifJ2[$k]){
                     $creatureJ1++;
@@ -423,7 +530,7 @@ class GameController extends Controller
                     $creatureJ2++;
                 }
                 elseif($objectifJ1[$k] == $objectifJ2[$k]){
-                    $attribution[$k] = 0;
+                    $attribution[$k] = $attributionActuelle[$k];
                 }
             }
             $partie->setObjectifAttribution(json_encode($attribution));

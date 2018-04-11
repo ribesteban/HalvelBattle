@@ -81,10 +81,12 @@
                             <p>Ajouter en ami</p>
                         </div></a>
                     {% endif %}
-                
-                <div class="actionjoueur">
-                    <p>Défier</p>
-                </div>
+                <a href="{{ path("creer2_partie", {'idadversaire': tjoueurs.Id}) }}">
+                    <div class="actionjoueur">
+                        <p>Défier</p>
+                    </div>
+                </a>
+
             </div>
         {% endif %}
     {% endfor %}
