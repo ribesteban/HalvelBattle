@@ -186,10 +186,12 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/user/rechercher", name="rechercher_joueur")
+     * @Route("/user/rechercher/{username}", name="rechercher_joueur")
      */
-    public function rechercher_joueur(){
-
+    public function rechercher_joueur($username){
+        $entityManager = $this->getDoctrine()->getManager();
+        $users = $entityManager->getRepository("App:User")->findByUsername($username);
+        return $this->render('User/search.html.twig', ['users'=>$users]);
     }
     /**
      * @Route("/user/joueur/{id}", name="joueur")

@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}
+    Back Office
+{% endblock %}
+
+{% block style %}
+    .bloc1{
+        background-image: url({{ asset('img/fond.jpg') }});
+    }
+    .gestion{
+        background-color: #181E2C;
+        border-radius: 10px;
+        float: left;
+        width:18vw;
+        height: 10vh;
+        margin: 1vw;
+        padding-top:3.5vh;
+        cursor:pointer;
+
+    }
+    .gestion:hover{
+         background-color:#303851;
+    }
+    .gestion p{
+        text-align:center;
+        font-size: 1.3em;
+        font-family: 'Cinzel', serif;
+        margin:0;
+    }
+{% endblock %}
+
+{% block bloc1 %}
+    <h2>Admin</h2>
+        <a href="{{ path('adminpartie') }}">
+            <div class="gestion" style=" margin-left:31vw;">
+                <p>Gérer les parties</p>
+            </div>
+        </a>
+        <a href="{{ path('adminuser') }}">
+            <div class="gestion">
+                <p>Gérer les utilisateurs</p>
+            </div>
+        </a>
+
+
+{% endblock %}
+

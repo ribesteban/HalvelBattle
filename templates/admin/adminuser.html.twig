@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}
+    Back Office - Gestion Parties
+{% endblock %}
+
+{% block style %}
+    .bloc1{
+    background-image: url({{ asset('img/fond.jpg') }});
+    padding-top: 10vh !important;
+    }
+    .gestion{
+    background-color: #181E2C;
+    border-radius: 10px;
+    float: left;
+    width:18vw;
+    height: 10vh;
+    margin: 1vw;
+    padding-top:3.5vh;
+    cursor:pointer;
+    }
+    .gestion:hover{
+    background-color:#303851;
+    }
+    .gestion p{
+    text-align:center;
+    font-size: 1.3em;
+    font-family: 'Cinzel', serif;
+    margin:0;
+    }
+    table
+    {
+    border-collapse: collapse;
+    background-color: #181E2C;
+    color: white;
+    margin-left: 10vw;
+    margin-bottom: 5vh;
+    }
+    td, th
+    {
+    padding: 2%;
+    border: 1px solid black;
+    min-width:10vw;
+    text-align:center;
+    }
+    a{
+    font-family: 'Cinzel', serif !important;
+    }
+    a:hover{
+    color:red;
+    }
+{% endblock %}
+
+{% block bloc1 %}
+    <a href="{{ path('admin') }}"><p><- Retour admin</p></a>
+    <a href="{{ path('adminpartie') }}"><p style="float: right;">Gestion Parties -></p></a><br/>
+    <h2>Admin - Gestion des Utilisateurs</h2>
+    <div class="col-12">
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Pseudo</th>
+                <th>Email</th>
+                <th>Nombre de parties jouées</th>
+                <th>Nombre de parties gagnées</th>
+                <th>Nombre d'amis</th>
+                <th>Supprimer</th>
+            </tr>
+            {% for user in users %}
+                {% if user.roles != ["ROLE_ADMIN"] %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.Username }}</td>
+                    <td>{{ user.Email }}</td>
+                    <td>{{ user.UserJouees }}</td>
+                    <td>{{ user.UserWin }}</td>
+                    <td>
+                        {% set i = 0 %}
+                        {% for ami in amis %}
+                            {% if ami.IdAmi1 == user.Id %}
+                                {% set i = i+1 %}
+                            {% endif %}
+                        {% endfor %}
+                        {{ i }}
+                    </td>
+                    <td><a href="{{ path('adminsupprimeruser', {'iduser': user.Id}) }}">Supprimer</a></td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+    </div>
+
+
+
+
+{% endblock %}
+

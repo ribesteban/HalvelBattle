@@ -1,0 +1,6 @@
+{% for user in users %}
+    <hr style="margin-top: 10vh;">
+<div id="ami">
+    <a href="{{ path("joueur", {'id': user.Id }) }}"><img class="avatars" src="{{ asset(user.UserImage) }}" alt=""><p class="pseudojoueurs">{{  user.Username }}<br/>Score : {{ user.UserWin }}</p></a>
+</div>
+{% endfor %}

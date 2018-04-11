@@ -11,6 +11,10 @@
     #z1{
         padding-top: 12vh !important;
     }
+    #assistance{
+        width: 50vw;
+    float:left;
+    }
     #button{
         padding-left:5vw;
         padding-right:5vw;
@@ -20,16 +24,38 @@
         margin: 1%;
         cursor: pointer;
     }
+    label{
+        color:white;
+        font-size: 1.5em;
+        text-align: left !important;
+        margin: 1%;
+    }
+    #input{
+        background-color : #151020;
+        color: white;
+        border: 0px solid;
+        border-radius: 10px;
+        padding: 1%;
+        width: 25vw;
+    }
+    textarea{
+        background-color : #151020;
+        color: white;
+        border: 0px solid;
+        border-radius: 10px;
+        padding: 1%;
+        width: 25vw;
+    }
 {% endblock %}
 
 {% block bloc1 %}
 
-    <div class="col-md-7">
+    <div class="col-md-7" id="assistance">
         <h4>Notre équipe est là pour répondre à toutes vos questions !</h4>
-        <label for="sujet">Sujet</label>
-        <input type="text" name="sujet">
-        <label for="message">Message</label>
-        <textarea name="message" id="message" cols="30" rows="10"></textarea>
+        <label for="sujet">Sujet</label><br/>
+        <input id="input" type="text" name="sujet" placeholder="Votre sujet..."><br/>
+        <label for="message">Message</label><br/>
+        <textarea name="message" id="message" cols="30" rows="10" placeholder="Votre message..."></textarea><br/>
     </div>
     <div class="col-md-4 colonne">
         <div class="chat">

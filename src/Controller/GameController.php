@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class GameController
  * @package App\Controller
+ * @Route("user")
  */
 class GameController extends Controller
 {
@@ -32,6 +33,7 @@ class GameController extends Controller
         } else {
             $id = "Pas d'Id";
         }
+
         $idAdversaire = $request->request->get('adversaire');
         $joueur = $this->getDoctrine()->getRepository(User::class)->find($id);
         $adversaire = $this->getDoctrine()->getRepository(User::class)->find($idAdversaire);
@@ -114,7 +116,7 @@ class GameController extends Controller
         return $this->redirectToRoute('afficher_partie', ['id' => $partie->getId(), 'partie'=>$partie]);
     }
     /**
-     * @Route("/afficher/{id}", name="afficher_partie")
+     * @Route("partie/afficher/{id}", name="afficher_partie")
      */
     public function afficherPartie(Partie $partie) {
         //récupération du joueur à partir de la session

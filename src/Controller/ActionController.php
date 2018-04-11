@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class GameController
  * @package App\Controller
+ * @Route("user/partie")
  */
 class ActionController extends Controller
 {

@@ -31,4 +31,13 @@ class PartieRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findPartiesJoueur($joueur)
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.j1 = :val')
+            ->orWhere('p.j2 = :val')
+            ->setParameter('val', $joueur)
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -6,6 +6,9 @@
 
 {% block style %}
     .bloc1{
+    {% if app.user.roles == ["ROLE_ADMIN"] %}
+        padding-top: 10vh !important;
+    {% endif %}
     background-image: url({{ asset('img/fond.jpg') }});
     }
     #boutton{
@@ -14,6 +17,9 @@
 {% endblock %}
 
 {% block bloc1 %}
+    {% if app.user.roles == ["ROLE_ADMIN"] %}
+        <a href="{{ path('admin') }}"><h2>Accéder au Back Office</h2></a>
+    {% endif %}
     <div class="col-md-12">
         <img src="{{ asset('img/logo_blanc.png') }}" alt="Halvel Battle"/>
     </div>

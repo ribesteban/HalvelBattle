@@ -23,6 +23,33 @@
     #ami{
         height:6vh;
     }
+    #searchbarre{
+        display:none;
+    }
+    #inputsearch{
+        margin-left: 4vw;
+        height: 5vh;
+        text-align: left;
+        margin-top: 1vh;
+        margin-bottom: 1vh;
+        float: left;
+        background-color: #151020;
+        color: white;
+        border: 0 solid;
+        border-radius: 10px 0px 0px 10px;
+        padding-left: 10px;
+    }
+    #submitsearch{
+        height: 5vh;
+        margin-top: 1vh;
+        margin-bottom: 1vh;
+        float:left;
+        width: 8vw;
+        background-color: #151020;
+        color: white;
+        border: 0px solid;
+        border-radius: 0px 10px 10px 0px;
+    }
 {% endblock %}
 
 {% block bloc1 %}
@@ -63,7 +90,9 @@
                         {% endfor %}
                 {% endif %}
             {% endfor %}
-            <p><a href="{{ path("rechercher_joueur") }}">Rechercher un joueur</a></p>
+            <p id="search" style="cursor:pointer;font-family: Cinzel;margin-bottom:1%;">Rechercher un joueur</p>
+            <div id="searchbarre"><input id="inputsearch" type="text" placeholder="Pseudo joueur..."><button id="submitsearch">Rechercher</button></div>
+            <div id="resultat"> </div>
         </div>
         <div class="col-md-4 info section">
         <h2>Classement</h2>
@@ -81,6 +110,23 @@
             {% endfor %}
         {% endfor %}
         </div>
-
+    <script>
+        $(document).ready(function () {
+            $('#search').click(function() {
+                $('#search').hide(500);
+                $('#searchbarre').show(500);
+            });
+            $('#submitsearch').click(function (){
+               if($('#inputsearch').val() != ''){
+                   var url = "{{ path('rechercher_joueur', {'username': 'text' }) }}";
+                   var username = $('#inputsearch').val();
+                   console.log(username);
+                   url = url.replace("text", username);
+                    console.log(url);
+                   $('#resultat').load(url);
+               }
+            });
+        });
+    </script>
 
 {% endblock %}

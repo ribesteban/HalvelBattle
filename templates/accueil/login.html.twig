@@ -12,10 +12,36 @@
         width:40vw;
     }
     .element{
-    float: left;
+        float: left;
     }
-    #submit{
-    background-image: url({{ asset('img/connexion.png') }});
+    label{
+        padding: 1%;
+        width: 16vw;
+        border-radius: 10px 0 0 10px;
+        background-color: #1B202F;
+        color:white;
+    }
+    input{
+        border-radius: 0 10px 10px 0;
+        border: 0 solid;
+        font-family: Poppins;
+        padding-left: 1%;
+        margin-left:-0.2vw;
+    }
+    .input{
+        margin-top:2vh;
+    }
+    button{
+        height: 5vh;
+        margin-top: 5vh;
+        width: 10vw;
+        background-color: #1B202F;
+        color: white;
+        border: 0px solid;
+        border-radius: 10px;
+    }
+    button:hover{
+        background-color: #151020;
     }
 {% endblock %}
 
@@ -31,25 +57,25 @@
         <img id="centaure" src="{{ asset('img/centaure.png') }}" alt="Halvel Battle"/>
     </div>
     <div class="col-md-5">
-        <div class="well">
+            <h3>Connexion</h3>
             <form action="{{ path('security_login') }}" method="post">
-                <fieldset>
-                    <legend><i class="fa fa-lock" aria-hidden="true"></i> Connexion</legend>
-                    <div class="form-group">
-                        <label for="username">Username</label>
-                        <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Mot de passe</label>
-                        <input type="password" id="password" name="_password" class="form-control" />
-                    </div>
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/>
-                    <button id="submit" type="submit">&nbsp;
-                    </button>
-                </fieldset>
+                        <div class="input">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="_username" value="{{ last_username }}"/>
+                        </div>
+
+                        <div class="input">
+                            <label for="password">Mot de passe</label>
+                            <input type="password" id="password" name="_password"/>
+                        </div>
+
+
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}"/><br/>
+                    <button id="submit" type="submit">Connexion !</button>
+
             </form>
             <p><a href="{{  path('inscription') }}">Pas encore inscrit ?</a></p>
-        </div>
+
     </div>
 
 

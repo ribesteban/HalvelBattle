@@ -96,6 +96,7 @@ hr{
 }
 a{
     color:white;
+    font-family: 'Cinzel', serif !important;
 }
 a:hover{
     color:#bbbbbb;
