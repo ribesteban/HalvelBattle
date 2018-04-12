@@ -1,6 +1,8 @@
+
 {% set who = 0 %}
     {% for carte in objectifs %}
         <span style="float:left;">
+
             <img src="{{ asset(carte.CarteImg) }}" alt="" style="margin-right: 1vw;">
             <img class="{{ attribution[who] }}" src="{{ asset("asset/img/jeton/"~carte.Id~".png") }}" alt="" style="
                     {% if attribution[who] == 0 %}margin-top:5vh;margin-left:-9vw;

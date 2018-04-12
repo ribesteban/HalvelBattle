@@ -22,14 +22,20 @@
         img.0{
             margin-top:5vh !important;
         }
+        .avatars{
+            margin:0;
+        }
+        .chat{
+            display:none;
+        }
 		{% endblock %}
 
     {% block bloc1 %}
-	<div class="col-md-8">
+	<div class="col-md-8 colonne">
 		<div class="col-12" style="float:none;height:10vh;">
             {% if joueur == 'j1' %}
 				<img class="avatars" src="{{ asset(joueur2.UserImage) }}" alt="">
-				<p>{{ joueur2.Username }}<br/>Score : {{ partie.ScoreJ2 }}</p><br/>
+				<p">{{ joueur2.Username }}<br/>Score : {{ partie.ScoreJ2 }}</p><br/>
             {% elseif joueur == 'j2' %}
 				<img class="avatars" src="{{ asset(joueur1.UserImage) }}" alt="">
 				<p>{{ joueur1.Username }}<br/>Score : {{ partie.ScoreJ1 }}</p><br/>
@@ -102,6 +108,15 @@
         </div>
 
 	</div>
+        <div class="col-md-4 colonne">
+            <div class="chat">
+                <div id="chat">
+
+                </div>
+                <input class="chatinput" type="text" placeholder="Votre message...">
+                <input class="chatsubmit" type="submit" value="envoyer">
+            </div>
+        </div>
 		<script>
             $(document).ready(function () {
                 action = 0;
@@ -239,10 +254,30 @@
                     {% if concurrenceJ1 != 1 or concurrenceJ2 != 1 %}
                     $("#actionsa2").load("{{ path('concurrence_suite2', {'joueur': joueur,'idpartie': idpartie}) }}");
                     {% endif %}
-                    {% if concurrenceJ1 == 1 and concurrenceJ2 == 1 and cadeauJ1== 1 and cadeauJ2 == 1 %}
+                    {% if concurrenceJ1 == 1 and concurrenceJ2 == 1 or cadeauJ1== 1 and cadeauJ2 == 1 %}
                     $("#fin").load("{{ path('finpartie', {'idpartie': idpartie}) }}");
                     {% endif %}
-                }, 11000);
+                }, 10000);
+
+                function envoyer(message){
+                    $.ajax({
+                        url: "{{ path("new_message") }}",
+                        method: 'post',
+                        data: {'message': message}
+                    });
+                }
+
+
+                $('.chatsubmit').click(function() {
+                    message = $('.chatinput').val();
+                    envoyer(message);
+                    $('.chatinput').val("");
+                });
+
+                setInterval(function () {
+                    $(".chat").show(500);
+                    $("#chat").load("{{ path('chat') }}");
+                }, 5000);
             });
 		</script>
 

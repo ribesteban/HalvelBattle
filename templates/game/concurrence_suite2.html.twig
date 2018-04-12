@@ -22,7 +22,11 @@
             float:left;
             margin-left: 1%;
         }
-
+        .active{
+            -moz-box-shadow: 0px 0px 26px #ffffff;
+            -webkit-box-shadow: 0px 0px 26px #ffffff;
+            box-shadow: 0px 0px 26px #ffffff;
+        }
         .paire1{
             height:20vh;
             width:16vw;
@@ -64,6 +68,10 @@
         $(document).ready(function () {
 
             $('.paire1').click(function () {
+                $('.emplacement1').addClass('active');
+                $('.emplacement2').addClass('active');
+                $('.emplacement3').removeClass('active');
+                $('.emplacement4').removeClass('active');
                 id1 = $(".emplacement1").attr('id');
                 id2 = $(".emplacement2").attr('id');
                 $("a").show();
@@ -73,6 +81,11 @@
                 $("a").attr('href', url);
             });
             $('.paire2').click(function () {
+                $('.emplacement3').addClass('active');
+                $('.emplacement4').addClass('active');
+                $('.emplacement1').removeClass('active');
+                $('.emplacement2').removeClass('active');
+
                 id1 = $(".emplacement3").attr('id');
                 id2 = $(".emplacement4").attr('id');
 

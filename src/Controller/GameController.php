@@ -324,6 +324,64 @@ class GameController extends Controller
     public function objectifs($idpartie){
         $entityManager = $this->getDoctrine()->getManager();
         $partie = $entityManager->getRepository("App:Partie")->find($idpartie);
+
+
+        $actionJ1 = $partie->getActionJ1();
+        $cartesJ1 = array();
+        $disparitionJ1 = $actionJ1->disparition;
+        $concurrenceJ1 = $actionJ1->concurrence;
+        $cadeauJ1 = $actionJ1->cadeau;
+        $concurrenceAJ1 = $actionJ1->concurrenceA;
+        $cadeauAJ1 = $actionJ1->cadeauA;
+        if($disparitionJ1->etat == 1){
+            $cartesJ1[] = $disparitionJ1->carte;
+        }
+        else{
+            $cartesJ1[] = 0;
+        }
+        if($concurrenceJ1->etat == 1){
+            $cartesJ1[] = $concurrenceJ1->carte[0];
+            $cartesJ1[] = $concurrenceJ1->carte[1];
+        }
+        else{
+            $cartesJ1[] = 0;
+            $cartesJ1[] = 0;
+        }
+        if($cadeauJ1->etat == 0){
+            $cartesJ1[] = $cadeauJ1->carte[0];
+            $cartesJ1[] = $cadeauJ1->carte[1];
+        }
+        else{
+            $cartesJ1[] = 0;
+            $cartesJ1[] = 0;
+        }
+
+
+        $pointJ1 = array();
+        if($cartesJ1[0] != 0){
+            $point1J1 = $entityManager->getRepository("App:Objet")->find($cartesJ1[0]);
+            $pointJ1[] = $point1J1->getValeur();
+        }
+        if($cartesJ1[1] != 0){
+            $point1J1 = $entityManager->getRepository("App:Objet")->find($cartesJ1[1]);
+            $pointJ1[] = $point1J1->getValeur();
+        }
+        if($cartesJ1[2] != 0){
+            $point1J1 = $entityManager->getRepository("App:Objet")->find($cartesJ1[2]);
+            $pointJ1[] = $point1J1->getValeur();
+        }
+        if($cartesJ1[3] != 0){
+            $point1J1 = $entityManager->getRepository("App:Objet")->find($cartesJ1[3]);
+            $pointJ1[] = $point1J1->getValeur();
+        }
+        if($cartesJ1[4] != 0){
+            $point1J1 = $entityManager->getRepository("App:Objet")->find($cartesJ1[4]);
+            $pointJ1[] = $point1J1->getValeur();
+        }
+
+        sort($pointJ1);
+        $taille = sizeof($pointJ1);
+
         //récupération des cartes objectifs et de leurs attributions
         $objectifs = $this->getDoctrine()->getRepository(Objectifs::class)->findAll();
         $attribution = $partie->getObjectifAttribution();
@@ -333,7 +391,9 @@ class GameController extends Controller
                 'joueur1' => $partie->getJ1(),
                 'joueur2' => $partie->getJ2(),
                 'objectifs'=>$objectifs,
-                'attribution'=>$attribution]);
+                'attribution'=>$attribution,
+                'pointJ1'=>$pointJ1,
+                'taille'=> $taille]);
     }
 
     /**
@@ -613,6 +673,33 @@ class GameController extends Controller
                 'mainJ1'=>$mainJ1,
                 'mainJ2'=>$mainJ2,
                 'pioche'=>$pioche]);
+    }
+    /**
+     * @Route("/traitement_finpartie/{idjoueur}/{vainqueur}", name="traitement_finpartie")
+     */
+    public function traitement_finpartie($idjoueur, $vainqueur){
+        $entityManager = $this->getDoctrine()->getManager();
+        $user = $entityManager->getRepository("App:User")->find($idjoueur);
+        if($vainqueur == 'oui'){
+            $jouees = $user->getUserJouees();
+            $win = $user->getUserWin();
+            $jouees++;
+            $win++;
+            $user->setUserJouees($jouees);
+            $user->setUserWin($win);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+        }
+        elseif($vainqueur == 'non'){
+            $jouees = $user->getUserJouees();
+            $jouees++;
+            $user->setUserJouees($jouees);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+        }
+        return $this->redirectToRoute('nouvelle_partie');
     }
 
     /**

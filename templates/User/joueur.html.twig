@@ -58,11 +58,11 @@
                     </div>
                     <div id="joueurs">
                         <h2>{{ tjoueurs.Username }}</h2>
-                        <p>Nombre de parties jouées : {{ joueur.UserJouees }}</p>
-                        <p>Nombre de parties gagnées : {{ joueur.UserWin }}</p>
-                        <p>Nombre de parties perdues : {{ joueur.userJouees - joueur.UserWin }}</p>
+                        <p>Nombre de parties jouées : {{ tjoueurs.UserJouees }}</p>
+                        <p>Nombre de parties gagnées : {{ tjoueurs.UserWin }}</p>
+                        <p>Nombre de parties perdues : {{ tjoueurs.userJouees - tjoueurs.UserWin }}</p>
                         {% if joueur.userJouees != 0 %}
-                            <p>Ratio : {{ ((joueur.UserWin / joueur.userJouees)|round(1, 'floor'))*100 }}% de victoire</p>
+                            <p>Ratio : {{ ((tjoueurs.UserWin / tjoueurs.userJouees)|round(2, 'floor'))*100 }}% de victoire</p>
                         {% endif %}
                     </div>
                 </div>

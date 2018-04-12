@@ -14,6 +14,18 @@
         font-size: 2em;
         font-family: 'Cinzel', serif;
     }
+    button{
+        margin-left: 5vw;
+        height: 5vh;
+        background-color: #151020;
+        color: white;
+        border: 0px solid;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+    button:hover{
+        background-color:#303851;
+    }
 </style>
 {% if pioche == 0 and mainJ1 == 0 and mainJ2 == 0 %}
 <div class="action col-8">
@@ -21,10 +33,18 @@
     {% if vainqueur == 0 %}
         <p style="font-size:1.2em;">Il n'y a pas de vainqueur, il faut désormais passer à la manche suivante..</p>
         <a href="{{ path('manche_suivante', {'idpartie': idpartie}) }}">Manche Suivante</a>
-        {% elseif vainqueur == 1 %}
-            <p>Le joueur 1 l'emporte</p>
-            {% elseif vainqueur == 2 %}
-                <p>Le joueur 2 l'emporte</p>
-                {% endif %}
+    {% elseif vainqueur == 1 and app.user.id == joueur1.Id %}
+        <p>Vous gagnez la partie !</p>
+        <a href="{{ path('traitement_finpartie', {'idjoueur': joueur1.Id, 'vainqueur': 'oui'}) }}"><button>Terminer</button></a>
+    {% elseif vainqueur == 1 and app.user.id != joueur1.Id %}
+        <p>{{ joueur1.Username }} gagne la partie !</p>
+        <a href="{{ path('traitement_finpartie', {'idjoueur': joueur2.Id, 'vainqueur': 'non'}) }}"><button>Terminer</button></a>
+    {% elseif vainqueur == 2 and app.user.id == joueur2.Id %}
+        <p>Vous gagnez la partie !</p>
+        <a href="{{ path('traitement_finpartie', {'idjoueur': joueur2.Id, 'vainqueur': 'oui'}) }}"><button>Terminer</button></a>
+    {% elseif vainqueur == 2 and app.user.id != joueur2.Id %}
+        <p>{{ joueur2.Username }} la partie !</p>
+        <a href="{{ path('traitement_finpartie', {'idjoueur': joueur1.Id, 'vainqueur': 'non'}) }}"><button>Terminer</button></a>
+    {% endif %}
 </div>
 {% endif %}

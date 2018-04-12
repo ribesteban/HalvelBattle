@@ -17,11 +17,29 @@
     #lien{
         float:right;
     }
+    button{
+        background-color: #151020;
+        color: white;
+        margin-top: 3vh;
+        cursor:pointer;
+        border: 0px solid;
+        border-radius: 10px;
+        padding: 1%;
+    }
+    button:hover{
+        background-color: #181E2C;
+
+    }
 </style>
+{% if parties == null %}
+    <div class="parties">
+        <p style="font-size: 1.2em;text-align:center;float:none;">Vous n'avez pas de partie en cours ou d'invitation à une partie.</p>
+        <a href="{{ path('nouvelle_partie') }}"><button>Retour</button></a>
+    </div>
+    {% endif %}
 {% for partie in parties %}
     <div class="parties">
         <p>Partie contre : {{ partie.J1.Username }}</p>
         <a id="lien" href="{{ path('afficher_partie', {'id': partie.Id}) }}"><p>Rejoindre</p></a>
     </div>
-
 {% endfor %}
