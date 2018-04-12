@@ -20,8 +20,10 @@ class GameController extends Controller
      */
     public function nouvellePartie()
     {
+        $user = $this->getUser();
+        $nbpartie = $user->getUserJouees();
         $joueurs = $this->getDoctrine()->getRepository(User::class)->findAll();
-        return $this->render('game/nouvelle.html.twig', ['joueurs' => $joueurs]);
+        return $this->render('game/nouvelle.html.twig', ['joueurs' => $joueurs, 'nbpartie'=>$nbpartie]);
     }
 
     /**

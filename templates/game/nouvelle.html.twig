@@ -76,6 +76,15 @@
         border-radius: 10px 0px 0px 10px;
         padding-left: 10px;
     }
+    #masquer{
+        height: 5vh;
+        margin-bottom: 1vh;
+        cursor: pointer;
+        background-color: #151020;
+        color: white;
+        border: 0 solid;
+        border-radius: 10px;
+    }
     #submitsearch{
         height: 5vh;
         margin-bottom: 1vh;
@@ -108,6 +117,28 @@
 {% endblock %}
 
 {% block bloc1 %}
+    {% if nbpartie == 0 %}
+        <div id="tutoriel" class="col-12" style="position:absolute;z-index: 2;margin-top: -10vh;">
+            <h3>Tutoriel</h3>
+            <iframe class="tutoriel" width="840" height="472" src="https://www.youtube.com/embed/gv4o_V3Z0-Q" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe><br/>
+            <button id="masquer">Masquer le tutoriel</button>
+        </div>
+        <script>
+            $(document).ready(function(){
+               $('#divdemarrer').hide();
+               $('#divrechercher').hide();
+               $('#divrejoindre').hide();
+
+                $('#masquer').click(function () {
+                    $('#tutoriel').hide(500);
+                    $('#divrejoindre').show(1000);
+                    $('#divdemarrer').show(1200);
+                    $('#divrechercher').show(1400);
+                });
+
+            });
+        </script>
+    {% endif %}
     <div class="col-12" id="divrejoindre" style="float:none;height:25vh;">
         <img id="rejoindreimg" src="{{ asset('img/continuer.png') }}" alt="">
         <div id="rejoindre">
