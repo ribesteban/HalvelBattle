@@ -28,6 +28,104 @@
         .chat{
             display:none;
         }
+
+        /* Grow */
+        .hvr-grow {
+        display: inline-block;
+        vertical-align: middle;
+        -webkit-transform: perspective(1px) translateZ(0);
+        transform: perspective(1px) translateZ(0);
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+        -webkit-transition-duration: 0.5s;
+        transition-duration: 0.5s;
+        -webkit-transition-property: transform;
+        transition-property: transform;
+        }
+        .hvr-grow:hover, .hvr-grow:focus, .hvr-grow:active {
+        -webkit-transform: scale(1.2);
+        transform: scale(1.2);
+        }
+
+        /* Bob */
+        @-webkit-keyframes hvr-bob {
+        0% {
+        -webkit-transform: translateY(-8px);
+        transform: translateY(-8px);
+        }
+        50% {
+        -webkit-transform: translateY(-4px);
+        transform: translateY(-4px);
+        }
+        100% {
+        -webkit-transform: translateY(-8px);
+        transform: translateY(-8px);
+        }
+        }
+        @keyframes hvr-bob {
+        0% {
+        -webkit-transform: translateY(-8px);
+        transform: translateY(-8px);
+        }
+        50% {
+        -webkit-transform: translateY(-4px);
+        transform: translateY(-4px);
+        }
+        100% {
+        -webkit-transform: translateY(-8px);
+        transform: translateY(-8px);
+        }
+        }
+        @-webkit-keyframes hvr-bob-float {
+        100% {
+        -webkit-transform: translateY(-8px);
+        transform: translateY(-8px);
+        }
+        }
+        @keyframes hvr-bob-float {
+        100% {
+        -webkit-transform: translateY(-8px);
+        transform: translateY(-8px);
+        }
+        }
+        .hvr-bob {
+        display: inline-block;
+        vertical-align: middle;
+        -webkit-transform: perspective(3px) translateZ(0);
+        transform: perspective(3px) translateZ(0);
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+        }
+        .hvr-bob:hover, .hvr-bob:focus, .hvr-bob:active {
+        -webkit-animation-name: hvr-bob-float, hvr-bob;
+        animation-name: hvr-bob-float, hvr-bob;
+        -webkit-animation-duration: .3s, 1.5s;
+        animation-duration: .3s, 1.5s;
+        -webkit-animation-delay: 0s, .3s;
+        animation-delay: 0s, .3s;
+        -webkit-animation-timing-function: ease-out, ease-in-out;
+        animation-timing-function: ease-out, ease-in-out;
+        -webkit-animation-iteration-count: 1, infinite;
+        animation-iteration-count: 1, infinite;
+        -webkit-animation-fill-mode: forwards;
+        animation-fill-mode: forwards;
+        -webkit-animation-direction: normal, alternate;
+        animation-direction: normal, alternate;
+        }
+
+        .plateauimg {
+        display: none;
+        }
+
+        @media screen and (max-width: 1704px) {
+        .plateau {
+        display: none;
+        }
+        .plateauimg {
+        display: block;
+        width: 100%;
+        margin-top: 25vh;
+        margin-left: 4vw;
+        }
+        }
 		{% endblock %}
 
     {% block bloc1 %}
@@ -35,7 +133,7 @@
 		<div class="col-12" style="float:none;height:10vh;">
             {% if joueur == 'j1' %}
 				<img class="avatars" src="{{ asset(joueur2.UserImage) }}" alt="">
-				<p">{{ joueur2.Username }}<br/>Score : {{ partie.ScoreJ2 }}</p><br/>
+				<p>{{ joueur2.Username }}<br/>Score : {{ partie.ScoreJ2 }}</p><br/>
             {% elseif joueur == 'j2' %}
 				<img class="avatars" src="{{ asset(joueur1.UserImage) }}" alt="">
 				<p>{{ joueur1.Username }}<br/>Score : {{ partie.ScoreJ1 }}</p><br/>
@@ -60,15 +158,16 @@
                 {% set who = who+1 %}
             {% endfor %}
 		</div>
-		<div class="col-12" id="actions">
-
-		</div>
         <div class="col-12" id="actionsa">
 
         </div>
         <div class="col-12" id="actionsa2">
 
         </div>
+		<div class="col-12" id="actions">
+
+		</div>
+
         <div class="col-12" id="fin">
 
         </div>
@@ -83,7 +182,7 @@
                 {% endif %}
                 <span style="width:6vw;">&nbsp;</span>
                 {% for carte in main %}
-                    <img class="objet" id="{{ carte.id }}" src="{{ asset(carte.img) }}" alt="">
+                    <img class="objet hvr-bob" id="{{ carte.id }}" src="{{ asset(carte.img) }}" alt="">
                 {% endfor %}
                 <br/>
             </div>
@@ -97,7 +196,7 @@
                 {% endif %}
 
                 {% for action in action_dispo %}
-                    <img class="{{ action }} actions" src="{{ asset('asset/img/joueur/'~action~'.png') }}" alt="" style="width:4vw;">
+                    <img class="{{ action }} actions hvr-bob" src="{{ asset('asset/img/joueur/'~action~'.png') }}" alt="" style="width:4vw;">
                 {% endfor %}
 
                 {% if action_dispo == null %}

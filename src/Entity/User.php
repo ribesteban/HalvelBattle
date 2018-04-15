@@ -31,7 +31,7 @@ class User implements UserInterface, \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="string", unique=true, length=50)
      * @Assert\NotBlank()
      */
     private $username;
@@ -39,7 +39,7 @@ class User implements UserInterface, \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="string", unique=true, length=50)
      * @Assert\NotBlank()
      * @Assert\Email()
      */
@@ -55,9 +55,9 @@ class User implements UserInterface, \Serializable
     /**
      * @var array
      *
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="text")
      */
-    private $roles = [];
+    private $roles;
 
 
     /**
@@ -124,22 +124,20 @@ class User implements UserInterface, \Serializable
     /**
      * Retourne les rôles de l'user
      */
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
+     public function getRoles()
+       {
+          // Afin d'être sûr qu'un user a toujours au moins 1 rôle
+           return json_decode($this->roles);
+       }
 
-// Afin d'être sûr qu'un user a toujours au moins 1 rôle
-        if (empty($roles)) {
-            $roles[] = 'ROLE_USER';
-        }
-
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): void
-    {
-        $this->roles = $roles;
-    }
+       /**
+        * @param $roles
+        * @return $this
+        */
+       public function setRoles($roles)
+       {
+           $this->roles = $roles;
+       }
 
     /**
      * @return mixed

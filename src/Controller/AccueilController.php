@@ -30,7 +30,7 @@ class AccueilController extends Controller
     /**
      * @Route ("/accueil/inscription", name="inscription")
      */
-    public function inscription(Request $request, UserPasswordEncoderInterface $passwordEncoder,  \Swift_Mailer $mailer)
+    public function inscription(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
 
         $user = new User();
@@ -43,7 +43,7 @@ class AccueilController extends Controller
             $user->setPassword($password);
 
             // Par defaut l'utilisateur aura toujours le rôle ROLE_USER
-            $user->setRoles(['ROLE_USER']);
+            $user->setRoles(json_encode(["ROLE_USER"]));
             $img = rand(0,9);
             $img = 'avatars/'.$img.'.png';
             $user->setUserImage($img);
@@ -54,13 +54,6 @@ class AccueilController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
-
-            $message = (new \Swift_Message('Hello Email'))
-                ->setFrom('ribesteban@gmail.com')
-                ->setTo($user->getEmail())
-                ->setBody('Bienvenue à Halvel Battle');
-
-            $mailer->send($message);
 
             return $this->redirectToRoute('security_login');
         }
